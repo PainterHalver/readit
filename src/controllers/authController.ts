@@ -7,6 +7,7 @@ import jwt from "jsonwebtoken";
 import { User } from "../entities/User";
 import AppError from "../utils/appError";
 import catchAsync from "../utils/catchAsync";
+import auth from "../middlewares/auth";
 
 export const register = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -77,22 +78,23 @@ export const login = catchAsync(
 );
 
 export const me = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const token = req.cookies.jwt;
+  async (_: Request, res: Response, next: NextFunction) => {
+    return res.status(200).json(res.locals.user);
+  }
+);
 
-    if (!token) {
-      return next(new AppError("Unauthenticated!", 401));
-    }
-    const { username }: any = jwt.verify(token, process.env.JWT_SECRET);
+export const logout = catchAsync(
+  async (_: Request, res: Response, next: NextFunction) => {
+    // Reset cookie === no more authentication
+    res.cookie("jwt", "", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production" ? true : false,
+      sameSite: "strict",
+      expires: new Date(0), // expires immediately
+    });
 
-    const user = await User.findOne({ username });
-    if (!user) {
-      return next(new AppError("Unauthenticated!", 401));
-    }
-
-    return res.json({
+    res.status(200).json({
       status: "success",
-      data: user,
     });
   }
 );
