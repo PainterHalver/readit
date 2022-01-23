@@ -1,31 +1,24 @@
 import { IsEmail, Length } from "class-validator";
 import {
-  Entity,
-  ObjectIdColumn,
-  ObjectID,
+  Entity as TOEntity,
   Column,
-  BaseEntity,
-  Index,
-  CreateDateColumn,
-  UpdateDateColumn,
-  Unique,
-  PrimaryColumn,
   BeforeInsert,
+  OneToMany,
+  Index,
 } from "typeorm";
 import bcrypt from "bcrypt";
-import { Exclude, instanceToPlain } from "class-transformer";
+import { Exclude } from "class-transformer";
 
-@Entity("users")
-export class User extends BaseEntity {
-  // 'Partial' so we do not have to put in all fields
+import Entity from "./Entity";
+import Post from "./Post";
+
+@TOEntity("users")
+export default class User extends Entity {
+  // 'Partial' so we do not have to put in all fields (typescript)
   constructor(user: Partial<User>) {
     super();
     Object.assign(this, user); // copies all enumerable own properties from one or more source objects to a target object.
   }
-
-  @Exclude()
-  @ObjectIdColumn()
-  public _id: ObjectID;
 
   // @Index()
   @Column({ unique: true })
@@ -42,19 +35,13 @@ export class User extends BaseEntity {
   @Length(6, 255)
   password: string;
 
-  @CreateDateColumn()
-  createAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
+  // https://typeorm.io/#/many-to-one-one-to-many-relations (is this child referencing?)
+  @OneToMany(() => Post, (post) => post.user)
+  posts: Post[];
 
   // pre save hook
   @BeforeInsert()
   async hashPassword() {
     this.password = await bcrypt.hash(this.password, 10);
-  }
-
-  toJSON() {
-    return instanceToPlain(this);
   }
 }

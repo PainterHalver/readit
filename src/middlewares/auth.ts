@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
-import { User } from "../entities/User";
+import User from "../entities/User";
 import AppError from "../utils/appError";
 import catchAsync from "../utils/catchAsync";
 

@@ -4,7 +4,7 @@ import { getMongoRepository } from "typeorm";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-import { User } from "../entities/User";
+import User from "../entities/User";
 import AppError from "../utils/appError";
 import catchAsync from "../utils/catchAsync";
 import auth from "../middlewares/auth";
