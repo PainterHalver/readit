@@ -27,7 +27,7 @@ export default class User extends Entity {
 
   @Exclude()
   @Column()
-  @Length(6, 255, { message: "Password must be >=65 characters!" })
+  @Length(6, 255, { message: "Password must be >=6 characters!" })
   password: string;
 
   // https://typeorm.io/#/many-to-one-one-to-many-relations (is this child referencing?)
