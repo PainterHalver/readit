@@ -2,16 +2,19 @@ import { NextFunction, Request, Response } from "express";
 import Comment from "../entities/Comment";
 import Post from "../entities/Post";
 import Sub from "../entities/Sub";
-import AppError from "../utils/appError";
 import catchAsync from "../utils/catchAsync";
 
 export const createPost = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, _: NextFunction) => {
     const { title, body, sub } = req.body;
     const user = res.locals.user;
 
     if (title.trim === "") {
-      return next(new AppError("Title must not be empty!", 400));
+      return res.status(400).json({
+        errors: {
+          username: "Title must not be empty",
+        },
+      });
     }
 
     const subDoc = await Sub.findOneOrFail({ name: sub });
@@ -47,7 +50,7 @@ export const getPosts = catchAsync(
 );
 
 export const getPost = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, _: NextFunction) => {
     const { identifier, slug } = req.params;
 
     const post = await Post.findOneOrFail({
@@ -57,7 +60,11 @@ export const getPost = catchAsync(
     post.sub = post.getSubWithoutId();
 
     if (!post) {
-      return next(new AppError("Post not found!", 404));
+      return res.status(404).json({
+        errors: {
+          username: "Post not found!",
+        },
+      });
     }
 
     // Populate Comments as alternative for relations
@@ -73,7 +80,7 @@ export const getPost = catchAsync(
 );
 
 export const commentOnPost = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, _: NextFunction) => {
     const { identifier, slug } = req.params;
     const { body } = req.body;
 
@@ -83,7 +90,11 @@ export const commentOnPost = catchAsync(
     });
 
     if (!post) {
-      return next(new AppError("No posts found!", 404));
+      return res.status(404).json({
+        errors: {
+          username: "No posts found!",
+        },
+      });
     }
     post = post.excludeSub();
 

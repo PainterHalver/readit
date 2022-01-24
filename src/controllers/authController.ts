@@ -4,7 +4,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 import User from "../entities/User";
-import AppError from "../utils/appError";
 import catchAsync from "../utils/catchAsync";
 
 const mapErrors = (errors: Object[]) => {
@@ -62,7 +61,7 @@ export const register = catchAsync(
 );
 
 export const login = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, _: NextFunction) => {
     const { username, password } = req.body;
 
     // Check for empty keys in body
@@ -78,11 +77,20 @@ export const login = catchAsync(
 
     const user = await User.findOne({ username });
     if (!user) {
-      return next(new AppError("User not found!", 404));
+      return res.status(404).json({
+        errors: {
+          username: "User not found!",
+        },
+      });
     }
+
     const passwordCorrect = await bcrypt.compare(password, user.password);
     if (!passwordCorrect) {
-      return next(new AppError("Password is incorrect!", 401));
+      return res.status(401).json({
+        errors: {
+          password: "Password is incorrect!",
+        },
+      });
     }
 
     // Generate token

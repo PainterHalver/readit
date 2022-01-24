@@ -21,7 +21,13 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.use(trim);
 app.use(cookieParser());
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin: "http://localhost:3000",
+    optionsSuccessStatus: 200,
+  })
+);
 
 app.get("/", (_, res) => {
   res.send("Hello World!");
