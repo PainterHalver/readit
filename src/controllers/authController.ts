@@ -7,19 +7,49 @@ import User from "../entities/User";
 import AppError from "../utils/appError";
 import catchAsync from "../utils/catchAsync";
 
+const mapErrors = (errors: Object[]) => {
+  // let mappedErrors: any = {};
+  // errors.forEach((err: any) => {
+  //   const key = err.property;
+  //   const value = Object.entries(err.constraints)[0][1]; // convert object to array
+  //   mappedErrors[key] = value;
+  // });
+
+  // cooler way
+  return errors.reduce((prev: any, err: any) => {
+    prev[err.property] = Object.entries(err.constraints)[0][1];
+    return prev;
+  }, {});
+};
+
 export const register = catchAsync(
   async (req: Request, res: Response, _: NextFunction) => {
     const { email, username, password } = req.body;
 
-    // Create the user
-    const user = new User({ email, username, password });
+    // Should check for empty or duplicate
+    let errors: any = {};
+    const emailUser = await User.findOne({ email });
+    const usernameUser = await User.findOne({ username });
 
-    const errors = await validate(user);
-    if (errors.length > 0)
+    if (emailUser) errors.email = "Email has already been taken!";
+    if (usernameUser) errors.username = "Username has already been taken!";
+
+    if (Object.keys(errors).length > 0) {
       return res.status(400).json({
         status: "failed",
         errors,
       });
+    }
+    // Create the user
+    const user = new User({ email, username, password });
+
+    errors = await validate(user);
+    if (Object.keys(errors).length > 0) {
+      return res.status(400).json({
+        status: "failed",
+        errors: mapErrors(errors),
+      });
+    }
 
     await user.save();
 

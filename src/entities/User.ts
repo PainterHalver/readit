@@ -16,17 +16,18 @@ export default class User extends Entity {
 
   // @Index()
   @Column({ unique: true })
-  @IsEmail()
+  @IsEmail(undefined, { message: "Must be a valid email address!" })
+  @Length(1, 255, { message: "Email is empty!" })
   public email: string;
 
   // @Index()
   @Column({ unique: true })
-  @Length(3, 255, { message: "Username should be >=3 characters!" })
+  @Length(3, 255, { message: "Username must be >=3 characters!" })
   public username: string;
 
   @Exclude()
   @Column()
-  @Length(6, 255)
+  @Length(6, 255, { message: "Password must be >=65 characters!" })
   password: string;
 
   // https://typeorm.io/#/many-to-one-one-to-many-relations (is this child referencing?)
