@@ -23,7 +23,21 @@ module.exports = {
         70: "17.5rem", // 280px
         160: "40rem",
       },
+      container: false, // disable default
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addComponents }) {
+      addComponents({
+        ".container": {
+          width: "100%",
+          marginLeft: "auto",
+          marginRight: "auto",
+          "@screen sm": { maxWidth: "640px" },
+          "@screen md": { maxWidth: "768px" },
+          "@screen lg": { maxWidth: "975px" },
+        },
+      });
+    },
+  ],
 };

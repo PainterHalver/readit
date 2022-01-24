@@ -11,6 +11,7 @@ import Entity from "./Entity";
 import User from "./User";
 import { makeId, slugify } from "../utils/helpers";
 import Comment from "./Comment";
+import { Expose } from "class-transformer";
 
 @TOEntity("posts")
 export default class Post extends Entity {
@@ -36,6 +37,9 @@ export default class Post extends Entity {
   @Column()
   subName: string; // subreddit
 
+  @Column()
+  username: string;
+
   @ManyToOne(() => User, (user) => user.posts)
   @JoinColumn({ name: "username", referencedColumnName: "username" })
   user: User;
@@ -49,9 +53,21 @@ export default class Post extends Entity {
   @BeforeInsert()
   async beforInsert() {
     // MONGO FIX
+    this.username = this.user.username;
     this.subName = this.sub.name; // Populate for mongodb because the upper doesn't work
     this.identifier = makeId(7);
     this.slug = slugify(this.title);
+  }
+
+  // 2 solutions for including url when querying
+  // protected url: string; // virtual field
+  // @AfterLoad()
+  // createFields() {
+  //   this.url = `/r/${this.subName}/${this.identifier}/${this.slug}`;
+  // }
+
+  @Expose() get url(): string {
+    return `/r/${this.subName}/${this.identifier}/${this.slug}`;
   }
 
   getSubWithoutId() {

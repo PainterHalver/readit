@@ -11,3 +11,7 @@
 - few tsconfig for better coding
 - now it comes to relations, obviously typeorm is not good for mongodb, that's why all of the documents implement embedding like a monkey
 - @Index() is only needed once to create index in mongo
+
+# TODO
+
+- Attempt to change weird mongodb fixes to probable code with @AfterLoad() hook, virtual fields, @Expose() (class transformer)
