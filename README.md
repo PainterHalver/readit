@@ -8,3 +8,5 @@
 - 'catchAsync', 'errorHandler' and 'AppError' are refactorings learned from natours nodejs project
 - TypeORM does not support MongoDB 4 ([error when querying from database and stuff](https://stackoverflow.com/questions/68908467/typeorm-and-mongodb-and-repositories-cannot-read-property-prototype-of-undefi))
 - auth middleware add the user to res.locals so it can be accessed from the routes that goes through this middleware
+- few tsconfig for better coding
+- now it comes to relations, obviously typeorm is not good for mongodb, that's why all of the documents implement embedding like a monkey

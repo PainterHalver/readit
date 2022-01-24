@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
-export default (req: Request, res: Response, next: NextFunction) => {
+export default (req: Request, _: Response, next: NextFunction) => {
   // trim input data eg "username": " john   "
   const exceptions = ["password"];
 

@@ -1,13 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import { isEmpty } from "class-validator";
-import { getMongoRepository } from "typeorm";
 
 import User from "../entities/User";
 import catchAsync from "../utils/catchAsync";
 import Sub from "../entities/Sub";
 
 export const createSub = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, _: NextFunction) => {
     const { name, title, description } = req.body;
     const user: User = res.locals.user;
 

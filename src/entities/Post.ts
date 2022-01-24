@@ -1,19 +1,14 @@
-import { IsEmail, Length } from "class-validator";
 import {
   Entity as TOEntity,
   Column,
   BeforeInsert,
-  Index,
   ManyToOne,
   JoinColumn,
 } from "typeorm";
-import bcrypt from "bcrypt";
-import { Exclude } from "class-transformer";
 
 import Entity from "./Entity";
 import User from "./User";
 import { makeId, slugify } from "../utils/helpers";
-import Sub from "./Sub";
 
 @TOEntity("posts")
 export default class Post extends Entity {
@@ -43,13 +38,20 @@ export default class Post extends Entity {
   @JoinColumn({ name: "username", referencedColumnName: "username" })
   user: User;
 
-  @ManyToOne(() => Sub, (sub) => sub.posts)
-  @JoinColumn({ name: "subName", referencedColumnName: "name" })
-  sub: Sub;
+  @Column()
+  sub: any; // mongo fix
 
   @BeforeInsert()
-  makeIdAndSlug() {
+  async beforInsert() {
+    // MONGO FIX
+    this.subName = this.sub.name; // Populate for mongodb because the upper doesn't work
     this.identifier = makeId(7);
     this.slug = slugify(this.title);
+  }
+
+  getSubWithoutId() {
+    const subClone = JSON.parse(JSON.stringify(this.sub));
+    delete subClone["_id"];
+    return subClone;
   }
 }

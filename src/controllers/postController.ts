@@ -16,11 +16,31 @@ export const createPost = catchAsync(
     const subDoc = await Sub.findOneOrFail({ name: sub });
 
     const post = new Post({ title, body, user, sub: subDoc });
+    // delete post.sub["_id"];
     await post.save();
 
     return res.status(200).json({
       status: "success",
       data: post,
+    });
+  }
+);
+
+export const getPosts = catchAsync(
+  async (_req: Request, res: Response, _: NextFunction) => {
+    const posts = await Post.find({
+      order: { createdAt: "DESC" },
+      // relations: ["sub"], // NOT WORKING WITH MONGODB
+    });
+
+    // Fake populating sub in posts
+    posts.forEach(async (post) => {
+      post.sub = post.getSubWithoutId();
+    });
+
+    return res.status(200).json({
+      status: "success",
+      data: posts,
     });
   }
 );

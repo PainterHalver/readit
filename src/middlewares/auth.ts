@@ -12,7 +12,7 @@ export default catchAsync(
     if (!token) {
       return next(new AppError("Unauthenticated!", 401));
     }
-    const { username }: any = jwt.verify(token, process.env.JWT_SECRET);
+    const { username }: any = jwt.verify(token, process.env.JWT_SECRET!);
 
     const user = await User.findOne({ username });
     if (!user) {

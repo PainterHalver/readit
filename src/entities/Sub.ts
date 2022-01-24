@@ -1,7 +1,6 @@
 import {
   Entity as TOEntity,
   Column,
-  Index,
   ManyToOne,
   JoinColumn,
   OneToMany,
@@ -9,7 +8,6 @@ import {
 
 import Entity from "./Entity";
 import User from "./User";
-import { makeId, slugify } from "../utils/helpers";
 import Post from "./Post";
 
 @TOEntity("subs")

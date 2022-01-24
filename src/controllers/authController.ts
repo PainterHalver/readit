@@ -1,16 +1,14 @@
 import { isEmpty, validate } from "class-validator";
 import { Request, Response, NextFunction } from "express";
-import { getMongoRepository } from "typeorm";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 import User from "../entities/User";
 import AppError from "../utils/appError";
 import catchAsync from "../utils/catchAsync";
-import auth from "../middlewares/auth";
 
 export const register = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, _: NextFunction) => {
     const { email, username, password } = req.body;
 
     // Create the user
@@ -58,14 +56,14 @@ export const login = catchAsync(
     }
 
     // Generate token
-    const token = jwt.sign({ id: user._id, username }, process.env.JWT_SECRET);
+    const token = jwt.sign({ id: user._id, username }, process.env.JWT_SECRET!); // ! for required (removing null check)
 
     // Send jwt to browser as cookie
     res.cookie("jwt", token, {
       httpOnly: true, // cannot be changed in anyway by browser
       secure: process.env.NODE_ENV === "production" ? true : false, // hard to https in development
       sameSite: "strict",
-      maxAge: 360000, // 100 hours
+      // maxAge: 360000, // 100 hours
       //   path: "/", // all routes (but here is from /api/auth/)
     });
 
@@ -78,13 +76,13 @@ export const login = catchAsync(
 );
 
 export const me = catchAsync(
-  async (_: Request, res: Response, next: NextFunction) => {
+  async (_req: Request, res: Response, _: NextFunction) => {
     return res.status(200).json(res.locals.user);
   }
 );
 
 export const logout = catchAsync(
-  async (_: Request, res: Response, next: NextFunction) => {
+  async (_req: Request, res: Response, _: NextFunction) => {
     // Reset cookie === no more authentication
     res.cookie("jwt", "", {
       httpOnly: true,

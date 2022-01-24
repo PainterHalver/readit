@@ -1,11 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
-export default (
-  error: any,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export default (error: any, _req: Request, res: Response, _: NextFunction) => {
   error.statusCode = error.statusCode || 500;
   error.status = error.status || "error";
 

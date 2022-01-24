@@ -9,11 +9,11 @@ import { Exclude, instanceToPlain } from "class-transformer";
 
 export default abstract class Entity extends BaseEntity {
   @Exclude()
-  @ObjectIdColumn()
+  @ObjectIdColumn({ select: false })
   public _id: ObjectID;
 
   @CreateDateColumn()
-  createAt: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
