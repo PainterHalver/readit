@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import Post from "../entities/Post";
+import Sub from "../entities/Sub";
 import AppError from "../utils/appError";
 import catchAsync from "../utils/catchAsync";
 
@@ -12,9 +13,9 @@ export const createPost = catchAsync(
       return next(new AppError("Title must not be empty!", 400));
     }
 
-    // TODO: Find sub
+    const subDoc = await Sub.findOneOrFail({ name: sub });
 
-    const post = new Post({ title, body, user, subName: sub });
+    const post = new Post({ title, body, user, sub: subDoc });
     await post.save();
 
     return res.status(200).json({

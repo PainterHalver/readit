@@ -38,6 +38,6 @@ app.listen(port, async () => {
 
 app.use("/api/auth", authRouter);
 app.use("/api/posts", postRouter);
-app.use("/api/posts", subRouter);
+app.use("/api/subs", subRouter);
 
 app.use(globalErrorHandler);
