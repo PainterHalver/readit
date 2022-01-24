@@ -4,7 +4,7 @@ export default (error: any, _req: Request, res: Response, _: NextFunction) => {
   error.statusCode = error.statusCode || 500;
   error.status = error.status || "error";
 
-  console.error(error);
+  console.log("ERROR COMING FROM ERROR HANDLER:", error);
 
   res.status(error.statusCode).json({
     status: "Error captured to errorHandler!",

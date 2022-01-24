@@ -44,3 +44,24 @@ export const getPosts = catchAsync(
     });
   }
 );
+
+export const getPost = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { identifier, slug } = req.params;
+
+    const post = await Post.findOneOrFail({
+      identifier,
+      slug,
+    });
+    post.sub = post.getSubWithoutId();
+
+    if (!post) {
+      return next(new AppError("Post not found!", 404));
+    }
+
+    return res.status(200).json({
+      status: "success",
+      data: post,
+    });
+  }
+);
