@@ -4,11 +4,13 @@ import {
   BeforeInsert,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from "typeorm";
 
 import Entity from "./Entity";
 import User from "./User";
 import { makeId, slugify } from "../utils/helpers";
+import Comment from "./Comment";
 
 @TOEntity("posts")
 export default class Post extends Entity {
@@ -38,6 +40,9 @@ export default class Post extends Entity {
   @JoinColumn({ name: "username", referencedColumnName: "username" })
   user: User;
 
+  @OneToMany(() => Comment, (comment) => comment.post)
+  comments: Comment[];
+
   @Column()
   sub: any; // mongo fix
 
@@ -53,5 +58,11 @@ export default class Post extends Entity {
     const subClone = JSON.parse(JSON.stringify(this.sub));
     delete subClone["_id"];
     return subClone;
+  }
+
+  excludeSub() {
+    const thisClone = JSON.parse(JSON.stringify(this));
+    delete thisClone["sub"];
+    return thisClone;
   }
 }

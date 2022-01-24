@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import Comment from "../entities/Comment";
 import Post from "../entities/Post";
 import Sub from "../entities/Sub";
 import AppError from "../utils/appError";
@@ -59,9 +60,43 @@ export const getPost = catchAsync(
       return next(new AppError("Post not found!", 404));
     }
 
+    // Populate Comments as alternative for relations
+    // post.comments = await Comment.find({
+    //   where: { "post.identifier": post.identifier },
+    // });
+
     return res.status(200).json({
       status: "success",
       data: post,
+    });
+  }
+);
+
+export const commentOnPost = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { identifier, slug } = req.params;
+    const { body } = req.body;
+
+    let post = await Post.findOneOrFail({
+      identifier,
+      slug,
+    });
+
+    if (!post) {
+      return next(new AppError("No posts found!", 404));
+    }
+    post = post.excludeSub();
+
+    const comment = new Comment({
+      body,
+      user: res.locals.user,
+      post,
+    });
+    await comment.save();
+
+    return res.status(200).json({
+      status: "success",
+      data: comment,
     });
   }
 );

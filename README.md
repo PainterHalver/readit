@@ -10,3 +10,4 @@
 - auth middleware add the user to res.locals so it can be accessed from the routes that goes through this middleware
 - few tsconfig for better coding
 - now it comes to relations, obviously typeorm is not good for mongodb, that's why all of the documents implement embedding like a monkey
+- @Index() is only needed once to create index in mongo
