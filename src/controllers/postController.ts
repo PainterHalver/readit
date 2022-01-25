@@ -38,9 +38,19 @@ export const getPosts = catchAsync(
     });
 
     // Fake populating sub in posts
-    posts.forEach(async (post) => {
-      await post.populateSub();
-    });
+    await Promise.all(
+      posts.map(async (post) => {
+        await post.populateSub();
+        await post.populateVotes();
+        await post.populateComments();
+      })
+    );
+
+    if (res.locals.user) {
+      await Promise.all(
+        posts.map(async (p) => await p.setUserVote(res.locals.user))
+      );
+    }
 
     return res.status(200).json({
       status: "success",

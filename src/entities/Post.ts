@@ -12,7 +12,7 @@ import Entity from "./Entity";
 import User from "./User";
 import { makeId, slugify } from "../utils/helpers";
 import Comment from "./Comment";
-import { Expose } from "class-transformer";
+import { Exclude, Expose } from "class-transformer";
 import Vote from "./Vote";
 import Sub from "./Sub";
 
@@ -49,6 +49,7 @@ export default class Post extends Entity {
 
   // @OneToMany(() => Comment, (comment) => comment.post)
   // comments: Comment[];
+  @Exclude()
   @Column()
   comments: Comment[];
   async populateComments() {
