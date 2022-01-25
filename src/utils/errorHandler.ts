@@ -9,6 +9,8 @@ export default (error: any, _req: Request, res: Response, _: NextFunction) => {
   res.status(error.statusCode).json({
     status: "Error captured to errorHandler!",
     message: error.message,
-    error,
+    errors: {
+      error: "Something went really wrong!",
+    },
   });
 };

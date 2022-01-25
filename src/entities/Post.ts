@@ -5,6 +5,7 @@ import {
   ManyToOne,
   JoinColumn,
   OneToMany,
+  AfterLoad,
 } from "typeorm";
 
 import Entity from "./Entity";
@@ -12,6 +13,8 @@ import User from "./User";
 import { makeId, slugify } from "../utils/helpers";
 import Comment from "./Comment";
 import { Expose } from "class-transformer";
+import Vote from "./Vote";
+import Sub from "./Sub";
 
 @TOEntity("posts")
 export default class Post extends Entity {
@@ -44,11 +47,51 @@ export default class Post extends Entity {
   @JoinColumn({ name: "username", referencedColumnName: "username" })
   user: User;
 
-  @OneToMany(() => Comment, (comment) => comment.post)
+  // @OneToMany(() => Comment, (comment) => comment.post)
+  // comments: Comment[];
+  @Column()
   comments: Comment[];
+  async populateComments() {
+    this.comments = await Comment.find({
+      where: { "post.identifier": this.identifier },
+    });
+  }
+
+  // @OneToMany(() => Vote, (vote) => vote.post)
+  // votes: Vote[];
+  @Column()
+  votes: Vote[];
+  async populateVotes() {
+    this.votes = await Vote.find({
+      where: { "post.identifier": this.identifier },
+    });
+  }
 
   @Column()
   sub: any; // mongo fix
+  async populateSub() {
+    this.sub = await Sub.findOneOrFail({
+      where: {
+        name: this.subName,
+      },
+    });
+  }
+
+  @Expose() get commentCount(): number {
+    return this.comments?.length;
+  }
+
+  @Expose() get voteScore(): number {
+    return this.votes?.reduce((prev, curr) => prev + (curr.value || 0), 0);
+  }
+
+  protected userVote: number;
+  async setUserVote(user: User) {
+    // await user.populateVotes();
+    await this.populateVotes();
+    const index = this.votes?.findIndex((v) => v.username === user.username);
+    this.userVote = index > -1 ? this.votes[index].value : 0;
+  }
 
   @BeforeInsert()
   async beforInsert() {
@@ -68,12 +111,6 @@ export default class Post extends Entity {
 
   @Expose() get url(): string {
     return `/r/${this.subName}/${this.identifier}/${this.slug}`;
-  }
-
-  getSubWithoutId() {
-    const subClone = JSON.parse(JSON.stringify(this.sub));
-    delete subClone["_id"];
-    return subClone;
   }
 
   excludeSub() {

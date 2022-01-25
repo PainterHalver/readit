@@ -39,7 +39,7 @@ export const getPosts = catchAsync(
 
     // Fake populating sub in posts
     posts.forEach(async (post) => {
-      post.sub = post.getSubWithoutId();
+      await post.populateSub();
     });
 
     return res.status(200).json({
@@ -58,7 +58,7 @@ export const getPost = catchAsync(
       identifier,
       slug,
     });
-    post.sub = post.getSubWithoutId();
+    await post.populateSub();
 
     if (!post) {
       return res.status(404).json({

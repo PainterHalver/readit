@@ -4,12 +4,15 @@ import {
   Entity as TOEntity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
+  SimpleConsoleLogger,
 } from "typeorm";
 
 import Entity from "./Entity";
 import User from "./User";
 import Post from "./Post";
 import { makeId } from "../utils/helpers";
+import Vote from "./Vote";
 
 @TOEntity("comments")
 export default class Comment extends Entity {
@@ -34,6 +37,21 @@ export default class Comment extends Entity {
 
   @ManyToOne(() => Post, (post) => post.comments, { nullable: false })
   post: Post;
+
+  @Column()
+  votes: Vote[];
+  async populateVotes() {
+    this.votes = await Vote.find({
+      where: { "comment.identifier": this.identifier },
+    });
+  }
+
+  protected userVote: number;
+  async setUserVote(user: User) {
+    await this.populateVotes();
+    const index = this.votes?.findIndex((v) => v.username == user.username);
+    this.userVote = index > -1 ? this.votes[index].value : 0;
+  }
 
   @BeforeInsert()
   async beforInsert() {

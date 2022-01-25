@@ -5,6 +5,7 @@ import { Exclude } from "class-transformer";
 
 import Entity from "./Entity";
 import Post from "./Post";
+import Vote from "./Vote";
 
 @TOEntity("users")
 export default class User extends Entity {
@@ -33,6 +34,12 @@ export default class User extends Entity {
   // https://typeorm.io/#/many-to-one-one-to-many-relations (is this child referencing?)
   @OneToMany(() => Post, (post) => post.user)
   posts: Post[];
+
+  @Column()
+  votes: Vote[];
+  async populateVotes() {
+    this.votes = await Vote.find({ username: this.username });
+  }
 
   // pre save hook
   @BeforeInsert()

@@ -15,3 +15,7 @@
 # TODO
 
 - Attempt to change weird mongodb fixes to probable code with @AfterLoad() hook, virtual fields, @Expose() (class transformer)
+
+# TTDRO
+
+- tsx and file extension meanings
