@@ -16,4 +16,7 @@
   .button.blue.hollow {
     @apply text-blue-500 bg-transparent border-blue-500;
   }
+  .button.blue.hollow:hover {
+    @apply text-white bg-blue-400 border-blue-400;
+  }
 }

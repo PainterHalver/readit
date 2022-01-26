@@ -32,7 +32,7 @@ export default function Home() {
         {/* Posts */}
         <div className="w-160">
           {posts?.map((post) => (
-            <PostCard post={post} key={post.identifier} />
+            <PostCard post={post} key={post.identifier} atIndexPage={true} />
           ))}
         </div>
         {/* Sidebar */}
@@ -58,11 +58,12 @@ export default function Home() {
                             alt="TopSub"
                             width={(6 * 16) / 4}
                             height={(6 * 16) / 4}
+                            className="rounded-full"
                           />
                         </Link>
                       </div>
                       <Link href={`/r/${sub.name}`}>
-                        <a className="font-bold hover:cursor-pointer">
+                        <a className="font-bold hover:cursor-pointer hover:underline">
                           /r/{sub.name}
                         </a>
                       </Link>

@@ -7,11 +7,13 @@ import { Post } from "./../types";
 import Axios from "axios";
 import classNames from "classnames";
 import ActionButton from "./ActionButton";
+import { useRouter } from "next/router";
 
 dayjs.extend(relativeTime);
 
 interface PostCardProps {
   post: Post;
+  atIndexPage: boolean;
 }
 
 export default function PostCard({
@@ -28,7 +30,10 @@ export default function PostCard({
     url,
     username,
   },
+  atIndexPage,
 }: PostCardProps) {
+  const router = useRouter();
+
   const vote = async (value) => {
     try {
       const res = await Axios.post("/misc/vote", {
@@ -42,7 +47,16 @@ export default function PostCard({
   };
 
   return (
-    <div key={identifier} className="flex mb-4 bg-white rounded">
+    <div
+      key={identifier}
+      className={classNames("flex mb-4 bg-white rounded", {
+        "hover:border-black border cursor-pointer transition-all duration-75":
+          atIndexPage,
+      })}
+      onClick={() => {
+        atIndexPage ? router.push(url) : null;
+      }}
+    >
       {/* Vote */}
       <div className="w-10 py-1 text-center bg-gray-200 rounded-l">
         {/* Upvote */}
