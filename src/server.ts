@@ -45,6 +45,8 @@ app.listen(port, async () => {
   }
 });
 
+app.use(express.static("public"));
+
 app.use("/api/auth", authRouter);
 app.use("/api/posts", postRouter);
 app.use("/api/subs", subRouter);

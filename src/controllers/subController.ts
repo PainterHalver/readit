@@ -1,11 +1,15 @@
 import { Request, Response, NextFunction } from "express";
 import { isEmpty } from "class-validator";
+import multer from "multer";
 
 import User from "../entities/User";
 import catchAsync from "../utils/catchAsync";
 import Sub from "../entities/Sub";
 import Post from "../entities/Post";
 import AppError from "../utils/appError";
+import { makeId } from "../utils/helpers";
+import path from "path";
+import fs from "fs";
 
 export const createSub = catchAsync(
   async (req: Request, res: Response, _: NextFunction) => {
@@ -71,6 +75,79 @@ export const getSub = catchAsync(
       await Promise.all(
         sub.posts.map(async (post) => await post.setUserVote(res.locals.user))
       );
+    }
+
+    return res.status(200).json({
+      status: "success",
+      data: sub,
+    });
+  }
+);
+
+export const ownSub = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const user: User = res.locals.user;
+
+    const sub = await Sub.findOne({
+      where: {
+        name: req.params.name,
+      },
+    });
+
+    if (!sub) {
+      return next(new AppError("No subs found!", 404));
+    }
+
+    if (sub.username !== user.username) {
+      return next(new AppError("You don't own this sub!", 403));
+    }
+
+    res.locals.sub = sub;
+    return next();
+  }
+);
+
+export const upload = multer({
+  storage: multer.diskStorage({
+    destination: "public/images",
+    filename: (_, file, callback) => {
+      const name = makeId(15);
+      callback(null, name + path.extname(file.originalname)); // adsfabsdfabiefkjb + .png
+    },
+  }),
+  fileFilter: (_, file: any, callback: multer.FileFilterCallback) => {
+    if (file.mimetype == "image/jpeg" || file.mimetype == "image/png") {
+      callback(null, true);
+    } else {
+      callback(new AppError("Not an image", 400));
+    }
+  },
+});
+
+export const uploadSubImage = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const sub: Sub = res.locals.sub;
+
+    const type = req.body.type;
+
+    if (type !== "image" && type !== "banner") {
+      // delete uploaded file
+      fs.unlinkSync(String(req.file?.path));
+      return next(new AppError("Invalid type", 400));
+    }
+
+    let oldImageUrn: string = "";
+    if (type === "image") {
+      oldImageUrn = sub.imageUrn || "";
+      sub.imageUrn = req.file?.filename;
+    } else if (type === "banner") {
+      oldImageUrn = sub.bannerUrn || "";
+      sub.bannerUrn = req.file?.filename;
+    }
+    await sub.save();
+
+    if (oldImageUrn !== "") {
+      fs.unlinkSync(`public\\images\\${oldImageUrn}`);
     }
 
     return res.status(200).json({

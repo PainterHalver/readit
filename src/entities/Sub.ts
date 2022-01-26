@@ -9,6 +9,7 @@ import {
 import Entity from "./Entity";
 import User from "./User";
 import Post from "./Post";
+import { Exclude, Expose } from "class-transformer";
 
 @TOEntity("subs")
 export default class Sub extends Entity {
@@ -28,14 +29,18 @@ export default class Sub extends Entity {
   description: string;
 
   @Column({ nullable: true })
-  imageUrn: string; // Urn: Unique resource name
+  imageUrn: string | undefined; // Urn: Unique resource name
 
   @Column({ nullable: true })
-  bannerUrn: string;
+  bannerUrn: string | undefined;
 
-  @ManyToOne(() => User)
-  @JoinColumn({ name: "username", referencedColumnName: "username" })
+  @Exclude()
+  @Column("user")
   user: User;
+
+  @Expose() get username(): string {
+    return this.user.username;
+  }
 
   @OneToMany(() => Post, (post) => post.sub)
   posts: Post[];
