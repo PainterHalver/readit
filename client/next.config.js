@@ -9,4 +9,7 @@ module.exports = {
     return config;
   },
   reactStrictMode: true,
+  images: {
+    domains: ["www.gravatar.com", "localhost"],
+  },
 };
