@@ -9,6 +9,7 @@ import Axios from "axios";
 import PostCard from "../../components/PostCard";
 import { Sub } from "../../types";
 import { useAuthState } from "../../context/auth";
+import SideBar from "./../../components/SideBar";
 
 // because we name the file [sub].tsx, nextjs knows how to use this file for the route
 export default function SubPage() {
@@ -141,6 +142,7 @@ export default function SubPage() {
           {/* Post and Sidebar */}
           <div className="container flex pt-5">
             <div className="w-160">{postsMarkup}</div>
+            <SideBar sub={sub} />
           </div>
         </Fragment>
       )}

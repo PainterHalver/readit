@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import Comment from "../entities/Comment";
 import Post from "../entities/Post";
+import Sub from "../entities/Sub";
 import User from "../entities/User";
 import Vote from "../entities/Vote";
 import catchAsync from "../utils/catchAsync";
@@ -72,6 +73,59 @@ export const vote = catchAsync(
     return res.status(200).json({
       status: "success",
       data: post,
+    });
+  }
+);
+
+// EXTREMELY BAD AGGREGATION :(
+export const topSubs = catchAsync(
+  async (req: Request, res: Response, _: NextFunction) => {
+    req;
+    res;
+    const allPosts = await Post.find();
+
+    const allSubs = await Sub.find();
+
+    const subs: any = {};
+    allSubs.forEach((sub) => {
+      subs[sub.name] = 0;
+    });
+
+    allPosts.forEach((post) => {
+      subs[post.subName] += 1;
+    });
+
+    var sortable = [];
+    for (var sub in subs) {
+      sortable.push([sub, subs[sub]]);
+    }
+
+    sortable.sort(function (a, b) {
+      return b[1] - a[1];
+    });
+
+    const sortedSubs: any = {};
+    sortable.forEach(function (item) {
+      sortedSubs[item[0]] = item[1];
+    });
+
+    const finalSubs = await Promise.all(
+      Object.keys(sortedSubs).map(async (subName) => {
+        const sub = await Sub.findOne({ name: subName });
+        return {
+          title: sub?.title,
+          name: subName,
+          imageUrl: sub?.imageUrn
+            ? `${process.env.APP_URL}/images/${sub.imageUrn}`
+            : "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+          postCount: sortedSubs[subName],
+        };
+      })
+    );
+
+    res.json({
+      status: "success",
+      data: finalSubs,
     });
   }
 );
