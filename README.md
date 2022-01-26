@@ -11,6 +11,8 @@
 - few tsconfig for better coding
 - now it comes to relations, obviously typeorm is not good for mongodb, that's why all of the documents implement embedding like a monkey
 - @Index() is only needed once to create index in mongo
+- run scripts from package.json at both front and backend at once with 'concurrently' npm package
+- typeorm-seed to seed data (not working with mongo)
 
 # TODO
 

@@ -1,6 +1,7 @@
 import { AppProps } from "next/app";
 import Axios from "axios";
 import { useRouter } from "next/router";
+import { SWRConfig } from "swr";
 
 import { AuthProvider } from "../context/auth";
 
@@ -18,12 +19,19 @@ function App({ Component, pageProps }: AppProps) {
   const authRoute = authRoutes.includes(pathname);
 
   return (
-    // Now the app has access to stateContext and dispatch method
-    <AuthProvider>
-      {/* Not showing Navbar in login or register page */}
-      {!authRoute && <NavBar />}
-      <Component {...pageProps} />
-    </AuthProvider>
+    <SWRConfig
+      value={{
+        fetcher: (url) => Axios.get(url).then((res) => res.data.data),
+        dedupingInterval: 10000, // don't call within 10s after leaving the page
+      }}
+    >
+      {/* Now the app has access to stateContext and dispatch method */}
+      <AuthProvider>
+        {/* Not showing Navbar in login or register page */}
+        {!authRoute && <NavBar />}
+        <Component {...pageProps} />
+      </AuthProvider>
+    </SWRConfig>
   );
 }
 
