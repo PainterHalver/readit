@@ -10,6 +10,7 @@ import PostCard from "../../components/PostCard";
 import { Sub } from "../../types";
 import { useAuthState } from "../../context/auth";
 import SideBar from "./../../components/SideBar";
+import NotFound from "../404";
 
 // because we name the file [sub].tsx, nextjs knows how to use this file for the route
 export default function SubPage() {
@@ -63,7 +64,10 @@ export default function SubPage() {
     }
   };
 
-  if (error) router.push("/");
+  if (error) {
+    // router.push("/");
+    return <NotFound />;
+  }
 
   let postsMarkup;
   if (!sub) {

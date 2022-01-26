@@ -69,6 +69,8 @@ export const getPost = catchAsync(
       slug,
     });
     await post.populateSub();
+    await post.populateVotes();
+    await post.populateComments();
 
     if (!post) {
       return res.status(404).json({
@@ -76,6 +78,10 @@ export const getPost = catchAsync(
           username: "Post not found!",
         },
       });
+    }
+
+    if (res.locals.user) {
+      await post.setUserVote(res.locals.user);
     }
 
     // Populate Comments as alternative for relations
