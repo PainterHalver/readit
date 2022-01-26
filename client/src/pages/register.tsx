@@ -6,6 +6,7 @@ import classNames from "classnames";
 import { useRouter } from "next/router";
 
 import InputGroup from "../components/inputGroup";
+import { useAuthState } from "../context/auth";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -14,7 +15,12 @@ export default function Register() {
   const [agreement, setAgreement] = useState(false);
   const [errors, setErrors] = useState<any>({});
 
+  const { authenticated } = useAuthState();
+
   const router = useRouter();
+
+  // Get back to the home page if already authenticated
+  if (authenticated) router.push("/");
 
   const submitForm = async (event: FormEvent) => {
     event.preventDefault();
