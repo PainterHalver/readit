@@ -13,6 +13,7 @@ import User from "./User";
 import Post from "./Post";
 import { makeId } from "../utils/helpers";
 import Vote from "./Vote";
+import { Expose } from "class-transformer";
 
 @TOEntity("comments")
 export default class Comment extends Entity {
@@ -44,6 +45,10 @@ export default class Comment extends Entity {
     this.votes = await Vote.find({
       where: { "comment.identifier": this.identifier },
     });
+  }
+
+  @Expose() get voteScore(): number {
+    return this.votes?.reduce((prev, curr) => prev + (curr.value || 0), 0);
   }
 
   protected userVote: number;

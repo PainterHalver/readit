@@ -53,7 +53,8 @@ export default function PostCard({
         "hover:border-black border cursor-pointer transition-all duration-75":
           atIndexPage,
       })}
-      onClick={() => {
+      onClick={(e) => {
+        if (e.target["href"]) return router.push(e.target["href"]);
         atIndexPage ? router.push(url) : null;
       }}
     >

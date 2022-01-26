@@ -56,7 +56,7 @@ const Navbar: React.FC = () => {
             <Fragment>
               <Link href="/login">
                 <a className="w-32 py-1 mr-4 leading-5 hollow blue button">
-                  Log in
+                  Login
                 </a>
               </Link>
               <Link href="/register">

@@ -128,3 +128,35 @@ export const commentOnPost = catchAsync(
     });
   }
 );
+
+export const getPostComments = catchAsync(
+  async (req: Request, res: Response) => {
+    const { identifier, slug } = req.params;
+    const post = await Post.findOneOrFail({ identifier, slug });
+
+    const comments = await Comment.find({
+      where: { "post.identifier": identifier },
+      order: { createdAt: "DESC" },
+      // relations: ['votes'],
+    });
+
+    await Promise.all(
+      comments.map(async (cmt) => {
+        await cmt.populateVotes();
+      })
+    );
+
+    if (res.locals.user) {
+      await Promise.all(
+        comments.map(async (cmt) => {
+          await cmt.setUserVote(res.locals.user);
+        })
+      );
+    }
+
+    return res.status(200).json({
+      status: "success",
+      data: comments,
+    });
+  }
+);

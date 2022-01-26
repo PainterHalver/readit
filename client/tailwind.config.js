@@ -26,6 +26,12 @@ module.exports = {
       container: false, // disable default
     },
   },
+  variants: {
+    extend: {
+      backgroundColor: ["disabled"],
+      borderColor: ["disabled"],
+    },
+  },
   plugins: [
     function ({ addComponents }) {
       addComponents({
