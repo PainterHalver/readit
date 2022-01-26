@@ -79,18 +79,17 @@ export default function PostCard({
       {/* Post data */}
       <div className="w-full p-2">
         <div className="flex items-center">
-          <Link href={`/r${subName}`}>
-            <Fragment>
-              {" "}
-              <img
-                src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
-                alt="userIMG"
-                className="w-6 h-6 mr-1 rounded-full cursor-pointer"
-              />
-              <a className="text-xs font-bold cursor-pointer hover:underline">
-                /r/{subName}
-              </a>
-            </Fragment>
+          <Link href={`/r/${subName}`}>
+            <img
+              src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
+              alt="userIMG"
+              className="w-6 h-6 mr-1 rounded-full cursor-pointer"
+            />
+          </Link>
+          <Link href={`/r/${subName}`}>
+            <a className="text-xs font-bold cursor-pointer hover:underline">
+              /r/{subName}
+            </a>
           </Link>
           <p className="text-xs text-gray-600">
             <span className="mx-1 text-gray-500">•</span> Posted by

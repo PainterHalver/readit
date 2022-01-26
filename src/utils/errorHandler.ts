@@ -10,7 +10,8 @@ export default (error: any, _req: Request, res: Response, _: NextFunction) => {
     status: "Error captured to errorHandler!",
     message: error.message,
     errors: {
-      error: "Something went really wrong!",
+      error: error.message,
+      error1: "Something went really wrong!",
     },
   });
 };

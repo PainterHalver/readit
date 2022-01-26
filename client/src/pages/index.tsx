@@ -12,7 +12,7 @@ import PostCard from "./../components/PostCard";
 dayjs.extend(relativeTime);
 
 export default function Home() {
-  const { data: posts } = useSWR("/posts");
+  const { data: posts, error } = useSWR("/posts");
   // const [posts, setPosts] = useState<Post[]>([]);
 
   // useEffect(() => {
@@ -22,7 +22,7 @@ export default function Home() {
   // }, []);
 
   return (
-    <div className="pt-12">
+    <Fragment>
       <Head>
         <title>readit: the front page of the internet</title>
       </Head>
@@ -35,7 +35,7 @@ export default function Home() {
         </div>
         {/* Sidebar */}
       </div>
-    </div>
+    </Fragment>
   );
 }
 

@@ -13,6 +13,15 @@ import NavBar from "./../components/Navbar";
 Axios.defaults.baseURL = "http://localhost:5000/api";
 Axios.defaults.withCredentials = true; // Allow cookies to be sent
 
+const fetcher = async (url: string) => {
+  try {
+    const res = await Axios.get(url);
+    return res.data.data;
+  } catch (error) {
+    throw error.response.data.errors;
+  }
+};
+
 function App({ Component, pageProps }: AppProps) {
   const { pathname } = useRouter();
   const authRoutes = ["/register", "/login"];
@@ -21,7 +30,7 @@ function App({ Component, pageProps }: AppProps) {
   return (
     <SWRConfig
       value={{
-        fetcher: (url) => Axios.get(url).then((res) => res.data.data),
+        fetcher,
         dedupingInterval: 10000, // don't call within 10s after leaving the page
       }}
     >
@@ -29,7 +38,9 @@ function App({ Component, pageProps }: AppProps) {
       <AuthProvider>
         {/* Not showing Navbar in login or register page */}
         {!authRoute && <NavBar />}
-        <Component {...pageProps} />
+        <div className={authRoute ? "" : "pt-12"}>
+          <Component {...pageProps} />
+        </div>
       </AuthProvider>
     </SWRConfig>
   );

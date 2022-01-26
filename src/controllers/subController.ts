@@ -4,6 +4,8 @@ import { isEmpty } from "class-validator";
 import User from "../entities/User";
 import catchAsync from "../utils/catchAsync";
 import Sub from "../entities/Sub";
+import Post from "../entities/Post";
+import AppError from "../utils/appError";
 
 export const createSub = catchAsync(
   async (req: Request, res: Response, _: NextFunction) => {
@@ -37,6 +39,43 @@ export const createSub = catchAsync(
     return res.status(200).json({
       status: "success",
       data: newSub,
+    });
+  }
+);
+
+export const getSub = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const name = req.params.name;
+
+    const sub = await Sub.findOne({ name });
+
+    if (!sub) {
+      return next(new AppError("No subs found!", 404));
+    }
+
+    const posts: Post[] = await Post.find({
+      where: { subName: sub.name },
+      order: { createdAt: "DESC" },
+    });
+
+    await Promise.all(
+      posts.map(async (post) => {
+        await post.populateComments();
+        await post.populateVotes();
+      })
+    );
+
+    sub.posts = posts;
+
+    if (res.locals.user) {
+      await Promise.all(
+        sub.posts.map(async (post) => await post.setUserVote(res.locals.user))
+      );
+    }
+
+    return res.status(200).json({
+      status: "success",
+      data: sub,
     });
   }
 );
