@@ -6,11 +6,16 @@ import classNames from "classnames";
 import { useRouter } from "next/router";
 
 import InputGroup from "../components/inputGroup";
+import { useAuthDispatch } from "../context/auth";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<any>({});
+
+  // using the dispatch to update user authentication state
+  // hooks are used at top-level of Function Component
+  const dispatch = useAuthDispatch();
 
   const router = useRouter();
 
@@ -18,10 +23,12 @@ export default function Login() {
     event.preventDefault();
 
     try {
-      await Axios.post("/auth/login", {
+      const res = await Axios.post("/auth/login", {
         password,
         username,
       });
+
+      dispatch("LOGIN", res.data.data);
 
       router.push("/");
     } catch (error) {
