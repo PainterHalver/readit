@@ -1,4 +1,5 @@
 import {
+  AfterLoad,
   BeforeInsert,
   Column,
   Entity as TOEntity,
@@ -36,8 +37,8 @@ export default class Comment extends Entity {
   @JoinColumn({ name: "username", referencedColumnName: "username" })
   user: User;
 
-  @ManyToOne(() => Post, (post) => post.comments, { nullable: false })
-  post: Post;
+  @Column()
+  post: any;
 
   @Column()
   votes: Vote[];

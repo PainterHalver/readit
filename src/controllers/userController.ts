@@ -29,7 +29,7 @@ export const getUserSubmissions = catchAsync(
       })
     );
     const comments = await Comment.find({
-      where: { username: req.params.username },
+      where: { "username.username": req.params.username },
     });
     await Promise.all(
       comments.map(async (comment) => {
@@ -52,8 +52,10 @@ export const getUserSubmissions = catchAsync(
 
     let submissions: any[] = [];
     // toJSON because p also has a model?
-    posts.forEach((p) => submissions.push({ type: "Post", ...p.toJSON }));
-    comments.forEach((c) => submissions.push({ type: "Comment", ...c.toJSON }));
+    posts.forEach((p) => submissions.push({ type: "Post", ...p.toJSON() }));
+    comments.forEach((c) =>
+      submissions.push({ type: "Comment", ...c.toJSON() })
+    );
     submissions.sort((a, b) => {
       if (b.createdAt > a.createdAt) return 1;
       if (b.createdAt < a.createdAt) return -1;

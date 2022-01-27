@@ -43,6 +43,8 @@ export interface Comment {
   updatedAt: string;
   identifier: string;
   body: string;
+  post: Post;
+  virtualPost: Post;
   username: {
     username: string;
   };
