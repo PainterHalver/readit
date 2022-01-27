@@ -1,4 +1,5 @@
 import Axios from "axios";
+import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
@@ -90,3 +91,29 @@ export default function Submit() {
     </div>
   );
 }
+
+// export async function getServerSideProps(context) {
+//   return {
+//     props: {}, // will be passed to the page component as props
+//   }
+// }
+
+// REDIRECT TO LOGIN PAGE IF NOT LOGGED IN
+// req, res are the same as from nodejs
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  try {
+    const cookie = req.headers.cookie;
+    if (!cookie) throw new Error("Missing auth token cookie");
+
+    await Axios.get("/auth/me", { headers: { cookie } });
+
+    return { props: {} };
+  } catch (err) {
+    return {
+      redirect: {
+        destination: "/login",
+        statusCode: 307,
+      },
+    };
+  }
+};
