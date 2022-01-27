@@ -18,8 +18,9 @@ export const createSub = catchAsync(
 
     let errors: any = {};
     if (isEmpty(name)) errors.name = "Name must not be empty!";
-    if (isEmpty(title)) errors.title = "Name must not be empty!";
-    if (isEmpty(name)) errors.name = "Name must not be empty!";
+    if (isEmpty(title)) errors.title = "Title must not be empty!";
+    if (isEmpty(description))
+      errors.description = "Description must not be empty!";
 
     const sub = await Sub.findOne({
       where: {

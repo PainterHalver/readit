@@ -4,15 +4,16 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import useSWR from "swr";
 
-import { Sub } from "./../types";
+import { Post, Sub } from "./../types";
 import PostCard from "./../components/PostCard";
 import Image from "next/image";
 import Link from "next/link";
+import { useAuthState } from "../context/auth";
 
 dayjs.extend(relativeTime);
 
 export default function Home() {
-  const { data: posts, error } = useSWR("/posts");
+  const { data: posts, error } = useSWR<Post[]>("/posts");
   // const [posts, setPosts] = useState<Post[]>([]);
 
   // useEffect(() => {
@@ -21,7 +22,9 @@ export default function Home() {
   //     .catch(console.log);
   // }, []);
 
-  const { data: topSubs } = useSWR("/misc/top-subs");
+  const { data: topSubs } = useSWR<Sub[]>("/misc/top-subs");
+
+  const { authenticated } = useAuthState();
 
   return (
     <Fragment>
@@ -44,7 +47,8 @@ export default function Home() {
               </p>
             </div>
             <div>
-              {topSubs?.map((sub: Sub, index: number) => {
+              {/* TOP SUBS */}
+              {topSubs?.map((sub, index: number) => {
                 if (index < 5)
                   return (
                     <div
@@ -53,13 +57,15 @@ export default function Home() {
                     >
                       <div className="mr-2">
                         <Link href={`/r/${sub.name}`}>
-                          <Image
-                            src={sub.imageUrl}
-                            alt="TopSub"
-                            width={(6 * 16) / 4}
-                            height={(6 * 16) / 4}
-                            className="rounded-full cursor-pointer "
-                          />
+                          <a>
+                            <Image
+                              src={sub.imageUrl}
+                              alt="TopSub"
+                              width={(6 * 16) / 4}
+                              height={(6 * 16) / 4}
+                              className="rounded-full cursor-pointer "
+                            />
+                          </a>
                         </Link>
                       </div>
                       <Link href={`/r/${sub.name}`}>
@@ -72,6 +78,15 @@ export default function Home() {
                   );
               })}
             </div>
+            {authenticated && (
+              <div className="p-4 border-t-2">
+                <Link href="/subs/create">
+                  <a className="w-full px-2 py-1 blue button">
+                    Create Community
+                  </a>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </div>

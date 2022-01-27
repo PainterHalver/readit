@@ -74,7 +74,7 @@ export default function SubPage() {
     postsMarkup = <p className="text-lg text-center">Loading...</p>;
   } else if (sub.posts.length === 0) {
     postsMarkup = (
-      <p className="text-lg text-center">No posts submitted yet!.</p>
+      <p className="text-lg text-center">No posts submitted yet!</p>
     );
   } else {
     postsMarkup = sub.posts.map((post) => (
