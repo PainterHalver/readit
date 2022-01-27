@@ -31,7 +31,7 @@ export default class Comment extends Entity {
   body: string;
 
   @Column()
-  username: string;
+  username: any;
 
   @ManyToOne(() => User)
   @JoinColumn({ name: "username", referencedColumnName: "username" })

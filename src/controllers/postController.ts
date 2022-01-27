@@ -125,6 +125,7 @@ export const commentOnPost = catchAsync(
       user: res.locals.user,
       post,
     });
+    comment.username = { username: res.locals.user.username }; // bad things happened :(
     await comment.save();
 
     return res.status(200).json({

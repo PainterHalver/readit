@@ -12,7 +12,3 @@
 - If you export a function called getServerSideProps (Server-Side Rendering) from a page, Next.js will pre-render this page on each request using the data returned by ('getServerSideProps')[https://nextjs.org/docs/basic-features/data-fetching/get-server-side-props]
 - Tailwind uses mobile-first approach. And media query can be written like "lg:block sm:border" (meaning block and border from medium or larger screens) (sm md lg xl)
 - Infinite loading using 'useSWRInfinite'
-
-# Problems
-
-- Infinite loading is calling back page 0 before calling the next page

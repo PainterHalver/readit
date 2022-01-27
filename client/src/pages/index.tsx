@@ -32,15 +32,14 @@ export default function Home() {
   const {
     data,
     error,
-    mutate,
     size: page,
     setSize: setPage,
     isValidating,
     revalidate,
   } = useSWRInfinite<Post[]>((index) => `/posts?page=${index}`);
 
-  const posts = data ? [].concat(...data) : []; //
-  // const isLoadingInitialData = !data && !error;
+  const posts = data ? [].concat(...data) : [];
+  const isLoadingInitialData = !data && !error; // only true at the first page request
 
   useEffect(() => {
     if (!posts || posts.length === 0) return;
@@ -75,8 +74,10 @@ export default function Home() {
       </Head>
       <div className="container flex pt-4">
         {/* Posts */}
-        {isValidating && <p className="text-lg text-center">Loading..</p>}
         <div className="w-full px-4 md:w-160 md:p-0">
+          {isLoadingInitialData && (
+            <p className="text-lg text-center">Loading..</p>
+          )}
           {posts?.map((post) => (
             <PostCard
               post={post}
@@ -85,10 +86,10 @@ export default function Home() {
               revalidate={revalidate}
             />
           ))}
+          {isValidating && posts.length > 0 && (
+            <p className="text-lg text-center">Loading..</p>
+          )}
         </div>
-        {isValidating && posts.length > 0 && (
-          <p className="text-lg text-center">Loading..</p>
-        )}
         {/* Sidebar */}
         <div className="hidden ml-6 md:block w-80">
           <div className="bg-white rounded">
