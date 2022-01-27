@@ -54,7 +54,7 @@ export default function PostPage() {
         value,
       });
 
-      mutate();
+      mutate(comments, true);
     } catch (err) {
       console.log(err);
     }
