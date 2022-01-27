@@ -156,3 +156,24 @@ export const uploadSubImage = catchAsync(
     });
   }
 );
+
+export const searchSub = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const name = req.params.name;
+
+    if (isEmpty(name)) {
+      return next(new AppError("Name must not be empty!", 400));
+    }
+
+    const subs = await Sub.find({
+      where: {
+        name: new RegExp(`${name.trim()}.*`, "i"),
+      },
+    });
+
+    return res.status(200).json({
+      status: "success",
+      data: subs,
+    });
+  }
+);

@@ -4,6 +4,7 @@ import {
   createSub,
   getSub,
   ownSub,
+  searchSub,
   upload,
   uploadSubImage,
 } from "../controllers/subController";
@@ -15,6 +16,7 @@ const router = Router();
 router.post("/", user, auth, createSub);
 
 router.get("/:name", user, getSub);
+router.get("/search/:name", searchSub);
 
 router.post(
   "/:name/image",
