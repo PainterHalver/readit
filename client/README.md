@@ -13,6 +13,8 @@
 - Tailwind uses mobile-first approach. And media query can be written like "lg:block sm:border" (meaning block and border from medium or larger screens) (sm md lg xl)
 - Infinite loading using 'useSWRInfinite'
 
+- Meta tags are used by search engine to show on their search result page
+
 # Problems
 
 - Vote, comment revalidation takes longer than expected to render

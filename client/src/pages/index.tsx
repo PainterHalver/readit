@@ -27,6 +27,10 @@ export default function Home() {
 
   const { data: topSubs } = useSWR<Sub[]>("/misc/top-subs");
 
+  const title = "readit: the front page of the internet";
+  const description =
+    "Reddit is a network of communities where people can dive into their interests, hobbies and passions. There's a community for whatever you're interested in on Reddit.";
+
   const { authenticated } = useAuthState();
 
   const {
@@ -70,7 +74,14 @@ export default function Home() {
   return (
     <Fragment>
       <Head>
-        <title>readit: the front page of the internet</title>
+        <title>{title}</title>
+        <meta name="description" content={description}></meta>
+        {/* facebook */}
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        {/* twitter */}
+        <meta property="twitter:title" content={title} />
+        <meta property="twitter:description" content={description} />
       </Head>
       <div className="container flex pt-4">
         {/* Posts */}
