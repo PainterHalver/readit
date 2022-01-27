@@ -8,12 +8,14 @@ import Axios from "axios";
 import classNames from "classnames";
 import ActionButton from "./ActionButton";
 import { useRouter } from "next/router";
+import { useAuthState } from "../context/auth";
 
 dayjs.extend(relativeTime);
 
 interface PostCardProps {
   post: Post;
-  atIndexPage: boolean;
+  atIndexPage?: boolean;
+  revalidate?: Function;
 }
 
 export default function PostCard({
@@ -31,16 +33,29 @@ export default function PostCard({
     username,
   },
   atIndexPage,
+  revalidate,
 }: PostCardProps) {
+  const { authenticated } = useAuthState();
+
   const router = useRouter();
 
-  const vote = async (value) => {
+  const vote = async (value: number) => {
+    if (!authenticated) {
+      router.push("/login");
+    }
+
+    if (value === userVote) value = 0;
+
     try {
       const res = await Axios.post("/misc/vote", {
         identifier,
         slug,
         value,
       });
+
+      if (revalidate) {
+        revalidate();
+      }
     } catch (error) {
       console.log(error);
     }
@@ -53,10 +68,11 @@ export default function PostCard({
         "hover:border-black border cursor-pointer transition-all duration-75":
           atIndexPage,
       })}
-      onClick={(e) => {
-        if (e.target["href"]) return router.push(e.target["href"]);
-        atIndexPage ? router.push(url) : null;
-      }}
+      // onClick={(e) => {
+      //   if (e.target["href"]) return router.push(e.target["href"]);
+      //   atIndexPage ? router.push(url) : null;
+      // }}
+      id={identifier}
     >
       {/* Vote */}
       <div className="w-10 py-1 text-center bg-gray-200 rounded-l">

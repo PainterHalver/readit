@@ -30,8 +30,7 @@ export default function SubPage() {
   const {
     data: sub,
     error,
-    // revalidate,
-    mutate,
+    revalidate,
   } = useSWR<Sub>(subName ? `/subs/${subName}` : null); // fetch when we get subName
 
   useEffect(() => {
@@ -58,7 +57,7 @@ export default function SubPage() {
           "Content-Type": "multipart/form-data",
         },
       });
-      mutate();
+      revalidate();
     } catch (error) {
       console.log(error);
     }

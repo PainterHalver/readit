@@ -26,7 +26,7 @@ export default function PostPage() {
   const { data: post, error } = useSWR<Post>(
     identifier && slug ? `/posts/${identifier}/${slug}` : null
   );
-  const { data: comments, mutate } = useSWR<Comment[]>(
+  const { data: comments, revalidate } = useSWR<Comment[]>(
     identifier && slug ? `/posts/${identifier}/${slug}/comments` : null
   );
 
@@ -54,7 +54,7 @@ export default function PostPage() {
         value,
       });
 
-      mutate(comments, true);
+      revalidate();
     } catch (err) {
       console.log(err);
     }
@@ -68,7 +68,7 @@ export default function PostPage() {
       await Axios.post(`/posts/${post.identifier}/${post.slug}/comments`, {
         body: newComment,
       });
-      mutate();
+      revalidate();
       setNewComment("");
     } catch (error) {
       console.log(error);

@@ -31,10 +31,15 @@ export const createPost = catchAsync(
 );
 
 export const getPosts = catchAsync(
-  async (_req: Request, res: Response, _: NextFunction) => {
+  async (req: Request, res: Response, _: NextFunction) => {
+    const currentPage: number = (req.query.page || 0) as number;
+    const postsPerPage: number = (req.query.count || 8) as number;
+
     const posts = await Post.find({
       order: { createdAt: "DESC" },
       // relations: ["sub"], // NOT WORKING WITH MONGODB
+      skip: currentPage * postsPerPage,
+      take: Number(postsPerPage),
     });
 
     // Fake populating sub in posts
