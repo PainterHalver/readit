@@ -11,6 +11,7 @@ dotenv.config();
 import authRouter from "./routes/authRoutes";
 import postRouter from "./routes/postRoutes";
 import subRouter from "./routes/subRoutes";
+import userRouter from "./routes/userRoutes";
 import miscRouter from "./routes/misc";
 import trim from "./middlewares/trim";
 import globalErrorHandler from "./utils/errorHandler";
@@ -51,5 +52,6 @@ app.use("/api/auth", authRouter);
 app.use("/api/posts", postRouter);
 app.use("/api/subs", subRouter);
 app.use("/api/misc", miscRouter);
+app.use("/api/users", userRouter);
 
 app.use(globalErrorHandler);
