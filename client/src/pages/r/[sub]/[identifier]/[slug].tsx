@@ -31,11 +31,6 @@ export default function PostPage() {
     identifier && slug ? `/posts/${identifier}/${slug}/comments` : null
   );
 
-  if (error) {
-    return <NotFound />;
-    // router.push("/");
-  }
-
   useEffect(() => {
     if (!post) return;
     let desc = post.body || post.title;
@@ -43,6 +38,11 @@ export default function PostPage() {
     desc = desc.substring(0, 158).concat("..");
     setDescription(desc);
   }, [post]);
+
+  if (error) {
+    return <NotFound />;
+    // router.push("/");
+  }
 
   const vote = async (value: number, comment?: Comment) => {
     // If not logged in go to login

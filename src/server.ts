@@ -31,10 +31,6 @@ app.use(
   })
 );
 
-app.get("/", (_, res) => {
-  res.send("Hello World!");
-});
-
 app.listen(port, async () => {
   console.log(`Server running on port ${port}`);
 
@@ -48,6 +44,7 @@ app.listen(port, async () => {
 
 app.use(express.static("public"));
 
+app.get("/api", (_, res) => res.send("Hello World!"));
 app.use("/api/auth", authRouter);
 app.use("/api/posts", postRouter);
 app.use("/api/subs", subRouter);
