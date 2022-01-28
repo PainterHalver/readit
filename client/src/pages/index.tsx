@@ -6,7 +6,6 @@ import useSWR, { useSWRInfinite } from "swr";
 
 import { Post, Sub } from "./../types";
 import PostCard from "./../components/PostCard";
-import Image from "next/image";
 import Link from "next/link";
 import { useAuthState } from "../context/auth";
 
@@ -121,12 +120,10 @@ export default function Home() {
                       <div className="mr-2">
                         <Link href={`/r/${sub.name}`}>
                           <a>
-                            <Image
+                            <img
                               src={sub.imageUrl}
                               alt="TopSub"
-                              width={(6 * 16) / 4}
-                              height={(6 * 16) / 4}
-                              className="rounded-full cursor-pointer "
+                              className="w-6 h-6 rounded-full cursor-pointer"
                             />
                           </a>
                         </Link>

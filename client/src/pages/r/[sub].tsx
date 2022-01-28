@@ -2,7 +2,6 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { ChangeEvent, createRef, Fragment, useEffect, useState } from "react";
 import useSWR from "swr";
-import Image from "next/image";
 import classNames from "classnames";
 import Axios from "axios";
 
@@ -120,15 +119,13 @@ export default function SubPage() {
             <div className="h-20 bg-white">
               <div className="container relative flex">
                 <div className="absolute" style={{ top: -15 }}>
-                  <Image
+                  <img
                     src={sub.imageUrl}
                     alt="Sub"
-                    className={classNames("rounded-full", {
+                    className={classNames("rounded-full w-16 h-16", {
                       "cursor-pointer": ownSub,
                     })}
                     onClick={() => openFileInput("image")}
-                    width={70}
-                    height={70}
                   />
                 </div>
                 <div className="pt-1 pl-24">
