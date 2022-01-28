@@ -23,13 +23,14 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.use(trim);
 app.use(cookieParser());
-app.use(
-  cors({
-    credentials: true,
-    origin: "http://localhost:3000",
-    optionsSuccessStatus: 200,
-  })
-);
+// app.use(
+//   cors({
+//     credentials: true,
+//     origin: "http://localhost:3000",
+//     optionsSuccessStatus: 200,
+//   })
+// );
+app.use(cors());
 
 app.listen(port, async () => {
   console.log(`Server running on port ${port}`);
