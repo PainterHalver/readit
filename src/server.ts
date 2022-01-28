@@ -30,7 +30,7 @@ app.use(cookieParser());
 //     optionsSuccessStatus: 200,
 //   })
 // );
-const corsOpts = cors({ origin: true });
+const corsOpts = cors();
 app.use(corsOpts);
 app.options("*", corsOpts);
 
