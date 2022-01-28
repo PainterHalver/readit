@@ -9,6 +9,7 @@
     "experimentalDecorators": true,
     "sourceMap": true,
     "esModuleInterop": true,
+    "skipLibCheck": true,
 
     // "strict": true,
     // Extra

@@ -30,7 +30,9 @@ app.use(cookieParser());
 //     optionsSuccessStatus: 200,
 //   })
 // );
-app.use(cors());
+const corsOpts = cors({ origin: true });
+app.use(corsOpts);
+app.options("*", corsOpts);
 
 app.listen(port, async () => {
   console.log(`Server running on port ${port}`);
