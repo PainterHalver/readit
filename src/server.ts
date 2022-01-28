@@ -30,7 +30,16 @@ app.use(cookieParser());
 //     optionsSuccessStatus: 200,
 //   })
 // );
-const corsOpts = cors();
+const whitelist = ["http://localhost:*", "http://*.vercel.app"];
+const corsOptions = {
+  credentials: true, // This is important.
+  origin: (origin: any, callback: Function) => {
+    if (whitelist.includes(origin)) return callback(null, true);
+
+    callback(new Error("Not allowed by CORS"));
+  },
+};
+const corsOpts = cors(corsOptions);
 app.use(corsOpts);
 app.options("*", corsOpts);
 
