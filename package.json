@@ -37,7 +37,7 @@
     "update": "^0.7.4"
   },
   "scripts": {
-    "start": "node build/server.js",
+    "start": "npx tsc && cd build && node server.js",
     "typeorm": "ts-node ./node_modules/typeorm/cli.js",
     "server": "nodemon --exec ts-node src/server.ts",
     "client": "cd client && npm run dev",
