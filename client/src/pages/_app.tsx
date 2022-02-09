@@ -12,7 +12,6 @@ import NavBar from "./../components/Navbar";
 
 Axios.defaults.baseURL = process.env.NEXT_PUBLIC_SERVER_BASE_URL + "/api";
 Axios.defaults.withCredentials = true; // Allow cookies to be sent
-Axios.defaults.headers = {crossDomain: true, "Cont"}
 
 const fetcher = async (url: string) => {
   try {
