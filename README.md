@@ -13,11 +13,8 @@
 - @Index() is only needed once to create index in mongo
 - run scripts from package.json at both front and backend at once with 'concurrently' npm package
 - typeorm-seed to seed data (not working with mongo)
+- Cookie not being able to load when deploying fix by adding (samesite: 'none') in res.cookie option
 
 # TODO
 
 - Attempt to change weird mongodb fixes to probable code with @AfterLoad() hook, virtual fields, @Expose() (class transformer)
-
-# TTDRO
-
-- tsx and file extension meanings
