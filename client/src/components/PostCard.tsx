@@ -9,6 +9,7 @@ import classNames from "classnames";
 import ActionButton from "./ActionButton";
 import { useRouter } from "next/router";
 import { useAuthState } from "../context/auth";
+import Vote from "./Vote";
 
 dayjs.extend(relativeTime);
 
@@ -26,6 +27,7 @@ export default function PostCard({
     body,
     subName,
     createdAt,
+    updatedAt,
     voteScore,
     userVote,
     commentCount,
@@ -78,31 +80,26 @@ export default function PostCard({
       id={identifier}
     >
       {/* Vote */}
-      <div className="w-10 py-1 text-center bg-gray-200 rounded-l">
-        {/* Upvote */}
-        <div
-          className="w-6 mx-auto text-gray-400 rounded cursor-pointer hover:bg-gray-300 hover:text-red-500"
-          onClick={() => vote(1)}
-        >
-          <i
-            className={classNames("icon-arrow-up", {
-              "text-red-500": userVote == 1,
-            })}
-          ></i>
-        </div>
-        <p className="text-xs font-bold">{voteScore}</p>
-        {/* Downvote */}
-        <div
-          className="w-6 mx-auto text-gray-400 rounded cursor-pointer hover:bg-gray-300 hover:text-blue-600"
-          onClick={() => vote(-1)}
-        >
-          <i
-            className={classNames("icon-arrow-down", {
-              "text-blue-600": userVote == -1,
-            })}
-          ></i>
-        </div>
-      </div>
+      <Vote
+        className="w-10 py-1 text-center bg-gray-200 rounded-l"
+        userVote={userVote}
+        voteScore={voteScore}
+        post={{
+          identifier,
+          slug,
+          title,
+          body,
+          subName,
+          createdAt,
+          updatedAt,
+          voteScore,
+          userVote,
+          commentCount,
+          url,
+          username,
+          sub,
+        }}
+      />
       {/* Post data */}
       <div className="w-full p-2">
         <div className="flex items-center">

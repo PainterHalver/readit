@@ -23,7 +23,7 @@ export default function Vote({
 
   const { authenticated } = useAuthState();
   const router = useRouter();
-  const { identifier, sub, slug } = router.query;
+  const { identifier, sub, slug } = post;
 
   //   useEffect(() => {
   //     setCurrentVote(userVote);
