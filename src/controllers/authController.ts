@@ -98,8 +98,8 @@ export const login = catchAsync(
     const token = jwt.sign({ id: user._id, username }, process.env.JWT_SECRET!); // ! for required (removing null check)
 
     // Send jwt to browser as cookie
-    res.cookie("jwt", token, {
-      httpOnly: true, // cannot be changed in anyway by browser
+    res.status(200).cookie("jwt", token, {
+      // httpOnly: true, // cannot be changed in anyway by browser
       secure: process.env.NODE_ENV === "production" ? true : false, // hard to https in development
       maxAge: 360000, // 100 hours
       // sameSite: "strict",
@@ -124,7 +124,7 @@ export const logout = catchAsync(
   async (_req: Request, res: Response, _: NextFunction) => {
     // Reset cookie === no more authentication
     res.cookie("jwt", "", {
-      httpOnly: true,
+      // httpOnly: true,
       secure: process.env.NODE_ENV === "production" ? true : false,
       // sameSite: "strict",
       expires: new Date(0), // expires immediately
