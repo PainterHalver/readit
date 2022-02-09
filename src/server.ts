@@ -31,7 +31,7 @@ app.use(trim);
 //   })
 // );
 const corsOptions = {
-  credentials: true, // This is important.
+  // credentials: true, // This is important.
   origin: true,
   optionsSuccessStatus: 200,
 };
