@@ -32,7 +32,7 @@ app.use(trim);
 // );
 const corsOptions = {
   credentials: true, // This is important.
-  // origin: true,
+  origin: "https://readit-calputer.vercel.app",
   // optionsSuccessStatus: 200,
 };
 const corsOpts = cors(corsOptions);
