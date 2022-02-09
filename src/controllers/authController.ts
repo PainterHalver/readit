@@ -100,7 +100,7 @@ export const login = catchAsync(
     // Send jwt to browser as cookie
     res.status(200).cookie("jwt", token, {
       // httpOnly: true, // cannot be changed in anyway by browser
-      secure: process.env.NODE_ENV === "production" ? true : false, // hard to https in development
+      // secure: process.env.NODE_ENV === "production" ? true : false, // hard to https in development
       maxAge: 360000, // 100 hours
       // sameSite: "strict",
       //   path: "/", // all routes (but here is from /api/auth/)
@@ -125,7 +125,7 @@ export const logout = catchAsync(
     // Reset cookie === no more authentication
     res.cookie("jwt", "", {
       // httpOnly: true,
-      secure: process.env.NODE_ENV === "production" ? true : false,
+      // secure: process.env.NODE_ENV === "production" ? true : false,
       // sameSite: "strict",
       expires: new Date(0), // expires immediately
     });
