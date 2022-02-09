@@ -4,10 +4,11 @@ import Post from "../entities/Post";
 import Sub from "../entities/Sub";
 import User from "../entities/User";
 import Vote from "../entities/Vote";
+import AppError from "../utils/appError";
 import catchAsync from "../utils/catchAsync";
 
 export const vote = catchAsync(
-  async (req: Request, res: Response, _: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     const { identifier, slug, commentIdentifier, value } = req.body;
     // Validate vote value
     if (![-1, 0, 1].includes(value)) {
@@ -20,17 +21,27 @@ export const vote = catchAsync(
     }
 
     const user: User = res.locals.user;
-    let post = await Post.findOneOrFail({ identifier, slug });
+    let post = await Post.findOne({ identifier, slug });
     let vote: Vote | undefined;
     let comment: Comment | undefined;
+    if (!post) {
+      return next(new AppError("No post found!", 404));
+    }
 
     if (commentIdentifier) {
       // Find vote by comment
       comment = await Comment.findOneOrFail({ identifier: commentIdentifier });
-      vote = await Vote.findOne({ username: user.username, comment });
+      vote = await Vote.findOne({
+        where: {
+          username: user.username,
+          "comment.identifier": comment.identifier,
+        },
+      });
     } else {
       // Find vote by post
-      vote = await Vote.findOne({ username: user.username, post });
+      vote = await Vote.findOne({
+        where: { username: user.username, "post.identifier": post.identifier },
+      });
     }
 
     if (!vote && value === 0) {
@@ -57,22 +68,34 @@ export const vote = catchAsync(
       await vote.save();
     }
 
-    post = await Post.findOneOrFail(
+    post = await Post.findOne(
       { identifier, slug }
       //   { relations: ["comment", "sub", "votes"] }
     );
+    if (!post) {
+      return next(new AppError("No post found!", 404));
+    }
     await post.populateComments();
     await post.populateSub();
     await post.populateVotes();
-
     await post.setUserVote(user);
     await Promise.all(
-      post.comments.map(async (c) => await c.setUserVote(user))
+      post.comments.map(async (c) => {
+        await c.populateVotes();
+        await c.setUserVote(user);
+      })
     );
+    if (comment) {
+      await comment.populateVotes();
+      await comment.setUserVote(user);
+    }
 
     return res.status(200).json({
       status: "success",
-      data: post,
+      data: {
+        userVote: comment ? comment.userVote : post.userVote,
+        voteScore: comment ? comment.voteScore : post.voteScore,
+      },
     });
   }
 );

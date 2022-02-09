@@ -52,7 +52,7 @@ export default class Comment extends Entity {
     return this.votes?.reduce((prev, curr) => prev + (curr.value || 0), 0);
   }
 
-  protected userVote: number;
+  userVote: number;
   async setUserVote(user: User) {
     await this.populateVotes();
     const index = this.votes?.findIndex((v) => v.username == user.username);

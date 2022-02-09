@@ -86,7 +86,7 @@ export default class Post extends Entity {
     return this.votes?.reduce((prev, curr) => prev + (curr.value || 0), 0);
   }
 
-  protected userVote: number;
+  userVote: number;
   async setUserVote(user: User) {
     // await user.populateVotes();
     await this.populateVotes();

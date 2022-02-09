@@ -14,6 +14,7 @@ import { useAuthState } from "../../../../context/auth";
 import ActionButton from "../../../../components/ActionButton";
 import NotFound from "../../../404";
 import { FormEvent, useEffect, useState } from "react";
+import Vote from "../../../../components/Vote";
 
 dayjs.extend(relativeTime);
 
@@ -24,10 +25,12 @@ export default function PostPage() {
   const { authenticated, user } = useAuthState();
   const router = useRouter();
   const { identifier, sub, slug } = router.query;
-  const { data: post, error } = useSWR<Post>(
-    identifier && slug ? `/posts/${identifier}/${slug}` : null
-  );
-  const { data: comments, revalidate } = useSWR<Comment[]>(
+  const {
+    data: post,
+    error,
+    revalidate: revalidatePost,
+  } = useSWR<Post>(identifier && slug ? `/posts/${identifier}/${slug}` : null);
+  const { data: comments, revalidate: revalidateComments } = useSWR<Comment[]>(
     identifier && slug ? `/posts/${identifier}/${slug}/comments` : null
   );
 
@@ -63,7 +66,8 @@ export default function PostPage() {
         value,
       });
 
-      revalidate();
+      revalidatePost();
+      revalidateComments();
     } catch (err) {
       console.log(err);
     }
@@ -77,7 +81,7 @@ export default function PostPage() {
       await Axios.post(`/posts/${post.identifier}/${post.slug}/comments`, {
         body: newComment,
       });
-      revalidate();
+      revalidateComments();
       setNewComment("");
     } catch (error) {
       console.log(error);
@@ -120,31 +124,12 @@ export default function PostPage() {
               <>
                 <div className="flex">
                   {/* Vote section */}
-                  <div className="flex-shrink-0 w-10 py-2 text-center rounded-l">
-                    {/* Upvote */}
-                    <div
-                      className="w-6 mx-auto text-gray-400 rounded cursor-pointer hover:bg-gray-300 hover:text-red-500"
-                      onClick={() => vote(1)}
-                    >
-                      <i
-                        className={classNames("icon-arrow-up", {
-                          "text-red-500": post.userVote === 1,
-                        })}
-                      ></i>
-                    </div>
-                    <p className="text-xs font-bold">{post.voteScore}</p>
-                    {/* Downvote */}
-                    <div
-                      className="w-6 mx-auto text-gray-400 rounded cursor-pointer hover:bg-gray-300 hover:text-blue-600"
-                      onClick={() => vote(-1)}
-                    >
-                      <i
-                        className={classNames("icon-arrow-down", {
-                          "text-blue-600": post.userVote === -1,
-                        })}
-                      ></i>
-                    </div>
-                  </div>
+                  <Vote
+                    userVote={post.userVote}
+                    voteScore={post.voteScore}
+                    post={post}
+                    className="flex-shrink-0 w-10 py-2 text-center rounded-l"
+                  />
                   <div className="py-2 pr-2">
                     <div className="flex items-center">
                       <p className="text-xs text-gray-500">
@@ -239,31 +224,13 @@ export default function PostPage() {
                 {comments?.map((comment) => (
                   <div className="flex" key={comment.identifier}>
                     {/* Vote */}
-                    <div className="flex-shrink-0 w-10 py-2 text-center rounded-l">
-                      {/* Upvote */}
-                      <div
-                        className="w-6 mx-auto text-gray-400 rounded cursor-pointer hover:bg-gray-300 hover:text-red-500"
-                        onClick={() => vote(1, comment)}
-                      >
-                        <i
-                          className={classNames("icon-arrow-up", {
-                            "text-red-500": comment.userVote === 1,
-                          })}
-                        ></i>
-                      </div>
-                      <p className="text-xs font-bold">{comment.voteScore}</p>
-                      {/* Downvote */}
-                      <div
-                        className="w-6 mx-auto text-gray-400 rounded cursor-pointer hover:bg-gray-300 hover:text-blue-600"
-                        onClick={() => vote(-1, comment)}
-                      >
-                        <i
-                          className={classNames("icon-arrow-down", {
-                            "text-blue-600": comment.userVote === -1,
-                          })}
-                        ></i>
-                      </div>
-                    </div>
+                    <Vote
+                      className="flex-shrink-0 w-10 py-2 text-center rounded-l"
+                      userVote={comment.userVote}
+                      voteScore={comment.voteScore}
+                      comment={comment}
+                      post={post}
+                    />
                     <div className="py-2 pr-2">
                       <p className="mb-1 text-xs leading-none">
                         <Link href={`/u/${comment.username.username}`}>

@@ -31,7 +31,8 @@ function App({ Component, pageProps }: AppProps) {
     <SWRConfig
       value={{
         fetcher,
-        dedupingInterval: 10000, // don't call within 10s after leaving the page
+        // dedupingInterval: 1500, // don't call within 10s after leaving the page
+        // revalidateOnMount: true,
       }}
     >
       {/* Now the app has access to stateContext and dispatch method */}
