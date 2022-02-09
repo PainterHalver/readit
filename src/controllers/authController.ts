@@ -98,22 +98,13 @@ export const login = catchAsync(
     const token = jwt.sign({ id: user._id, username }, process.env.JWT_SECRET!); // ! for required (removing null check)
 
     // Send jwt to browser as cookie
-    // res.cookie("jwt", token, {
-    //   httpOnly: true, // cannot be changed in anyway by browser
-    //   secure: process.env.NODE_ENV === "production" ? true : false, // hard to https in development
-    //   maxAge: 360000, // 100 hours
-    //   // sameSite: "strict",
-    //   //   path: "/", // all routes (but here is from /api/auth/)
-    // });
-    res.set(
-      "Set-Cookie",
-      cookie.serialize("jwt", token, {
-        httpOnly: true,
-        sameSite: "strict",
-        maxAge: 360000,
-        path: "/",
-      })
-    );
+    res.cookie("jwt", token, {
+      httpOnly: true, // cannot be changed in anyway by browser
+      secure: process.env.NODE_ENV === "production" ? true : false, // hard to https in development
+      maxAge: 360000, // 100 hours
+      // sameSite: "strict",
+      //   path: "/", // all routes (but here is from /api/auth/)
+    });
 
     return res.status(200).json({
       status: "success",

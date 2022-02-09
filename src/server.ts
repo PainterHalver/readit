@@ -32,8 +32,8 @@ app.use(trim);
 // );
 const corsOptions = {
   // credentials: true, // This is important.
-  origin: true,
-  optionsSuccessStatus: 200,
+  // origin: true,
+  // optionsSuccessStatus: 200,
 };
 const corsOpts = cors(corsOptions);
 app.use(corsOpts);
