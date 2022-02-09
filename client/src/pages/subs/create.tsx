@@ -3,7 +3,8 @@ import classNames from "classnames";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
+import { useAuthState } from "../../context/auth";
 
 export default function CreateSub() {
   const [name, setName] = useState("");
@@ -11,8 +12,11 @@ export default function CreateSub() {
   const [description, setDescription] = useState("");
 
   const [errors, setErrors] = useState<Partial<any>>({});
+  const { authenticated } = useAuthState();
 
   const router = useRouter();
+
+  if (authenticated) router.push("/login");
 
   const submitForm = async (event: FormEvent) => {
     event.preventDefault();
@@ -102,20 +106,21 @@ export default function CreateSub() {
     </div>
   );
 }
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  try {
-    const cookie = req.headers.cookie;
-    if (!cookie) throw new Error("Missing auth token cookie");
 
-    await Axios.get("/auth/me", { headers: { cookie } });
+// export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+//   try {
+//     const cookie = req.headers.cookie;
+// if (!cookie) throw new Error("Missing auth token cookie");
 
-    return { props: {} };
-  } catch (err) {
-    return {
-      redirect: {
-        destination: "/login",
-        statusCode: 307,
-      },
-    };
-  }
-};
+//     const res = await Axios.get("/auth/me");
+
+//     return { props: {} };
+//   } catch (err) {
+//     return {
+//       redirect: {
+//         destination: "/login",
+//         statusCode: 307,
+//       },
+//     };
+//   }
+// };
