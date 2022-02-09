@@ -47,32 +47,6 @@ export default function PostPage() {
     // router.push("/");
   }
 
-  const vote = async (value: number, comment?: Comment) => {
-    // If not logged in go to login
-    if (!authenticated) router.push("/login");
-
-    // If vote is the same reset vote
-    if (
-      (!comment && value === post.userVote) ||
-      (comment && comment.userVote === value)
-    )
-      value = 0;
-
-    try {
-      await Axios.post("/misc/vote", {
-        identifier,
-        slug,
-        commentIdentifier: comment?.identifier,
-        value,
-      });
-
-      revalidatePost();
-      revalidateComments();
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   const submitComment = async (event: FormEvent) => {
     event.preventDefault();
     if (newComment.trim() === "") return;

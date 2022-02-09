@@ -101,8 +101,6 @@ export const login = catchAsync(
     // res.cookie("jwt", token, {
     //   httpOnly: true, // cannot be changed in anyway by browser
     //   secure: process.env.NODE_ENV === "production" ? true : false, // hard to https in development
-    //   domain:
-    //     process.env.NODE_ENV === "development" ? ".localhost" : ".vercel.app",
     //   maxAge: 360000, // 100 hours
     //   // sameSite: "strict",
     //   //   path: "/", // all routes (but here is from /api/auth/)

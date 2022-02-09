@@ -44,28 +44,6 @@ export default function PostCard({
 
   const isInSubPage = router.pathname === "/r/[sub]"; // /r/[sub]
 
-  const vote = async (value: number) => {
-    if (!authenticated) {
-      router.push("/login");
-    }
-
-    if (value === userVote) value = 0;
-
-    try {
-      const res = await Axios.post("/misc/vote", {
-        identifier,
-        slug,
-        value,
-      });
-
-      if (revalidate) {
-        revalidate();
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <div
       key={identifier}
