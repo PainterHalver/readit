@@ -4,7 +4,6 @@ import Link from "next/link";
 import { FormEvent, useState } from "react";
 import classNames from "classnames";
 import { useRouter } from "next/router";
-import Cookies from "js-cookie";
 
 import InputGroup from "../components/inputGroup";
 import { useAuthDispatch, useAuthState } from "../context/auth";
@@ -32,8 +31,6 @@ export default function Login() {
         password,
         username,
       });
-
-      Cookies.set("jwt", res.data.token, { expires: 10 });
 
       dispatch("LOGIN", res.data.data);
 
