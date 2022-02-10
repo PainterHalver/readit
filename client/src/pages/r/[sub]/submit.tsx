@@ -12,12 +12,11 @@ export default function Submit() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
 
+  const { authenticated } = useAuthState();
   const router = useRouter();
   const { sub: subName } = router.query;
 
   const { data: sub, error } = useSWR<Sub>(subName ? `/subs/${subName}` : null);
-
-  const { authenticated } = useAuthState();
 
   if (!authenticated) {
     router.push("/login");
