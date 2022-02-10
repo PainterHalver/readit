@@ -56,6 +56,12 @@ export default function Home() {
     }
   }, [posts]);
 
+  useEffect(() => {
+    if (authenticated && !posts[0].userVote) {
+      window.location.reload();
+    }
+  }, []);
+
   const observeElement = (element: HTMLElement) => {
     if (!element) return;
     const observer = new IntersectionObserver(

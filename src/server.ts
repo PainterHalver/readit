@@ -30,9 +30,14 @@ app.use(trim);
 //     optionsSuccessStatus: 200,
 //   })
 // );
+// const whitelist = [
+//   "https://readit-calputer.vercel.app",
+//   "http://localhost:3000",
+//   "http://localhost:5000",
+// ];
 const corsOptions = {
   credentials: true, // This is important.
-  origin: "https://readit-calputer.vercel.app",
+  origin: true,
   // optionsSuccessStatus: 200,
 };
 const corsOpts = cors(corsOptions);

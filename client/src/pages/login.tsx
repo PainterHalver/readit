@@ -34,7 +34,7 @@ export default function Login() {
 
       dispatch("LOGIN", res.data.data);
 
-      router.back();
+      router.push("/");
     } catch (error) {
       console.log(error);
       setErrors(error.response.data.errors);

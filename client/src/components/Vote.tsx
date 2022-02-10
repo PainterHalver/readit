@@ -18,17 +18,18 @@ export default function Vote({
   post: Post;
   className?: string;
 }) {
-  const [currentVote, setCurrentVote] = useState(userVote);
-  const [currentScore, setCurrentScore] = useState(voteScore);
+  const [currentVote, setCurrentVote] = useState(0);
+  const [currentScore, setCurrentScore] = useState(0);
 
   const { authenticated } = useAuthState();
   const router = useRouter();
   const { identifier, sub, slug } = post;
 
-  //   useEffect(() => {
-  //     setCurrentVote(userVote);
-  //     setCurrentScore(voteScore);
-  //   });
+  useEffect(() => {
+    console.log({ userVote, voteScore });
+    setCurrentScore(voteScore);
+    setCurrentVote(userVote);
+  }, []);
 
   const vote = async (value: number) => {
     // If not logged in go to login
