@@ -18,9 +18,11 @@ export default function Submit() {
 
   const { data: sub, error } = useSWR<Sub>(subName ? `/subs/${subName}` : null);
 
-  if (!authenticated) {
-    router.push("/login");
-  }
+  useEffect(() => {
+    if (!authenticated) {
+      router.push("/login");
+    }
+  }, []);
 
   if (error) {
     router.push("/");
