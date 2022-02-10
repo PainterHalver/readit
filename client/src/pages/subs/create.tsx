@@ -16,7 +16,7 @@ export default function CreateSub() {
 
   const router = useRouter();
 
-  if (authenticated) router.push("/login");
+  if (!authenticated) router.push("/login");
 
   const submitForm = async (event: FormEvent) => {
     event.preventDefault();
