@@ -1,0 +1,5 @@
+mongodump --uri mongodb+srv://calputer:qazxswedcvfr@readit.4f5ke.mongodb.net/readit
+
+mongorestore dump/
+
+db.users.find({},{email:1, username:1, password:1})

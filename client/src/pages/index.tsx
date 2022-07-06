@@ -57,7 +57,7 @@ export default function Home() {
   }, [posts]);
 
   useEffect(() => {
-    if (authenticated && !posts[0].userVote) {
+    if (authenticated && posts.length && !posts[0].userVote) {
       window.location.reload();
     }
   }, []);
