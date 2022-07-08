@@ -1,0 +1,35 @@
+version: "3.1"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:3000"
+      - "5000:5000"
+    environment:
+      - MONGODB_URL=mongodb://mongo:27017/readit
+      - NODE_ENV=development
+      - APP_URL=http://localhost:5000
+      - JWT_SECRET="a super secure secret"
+
+      - NEXT_PUBLIC_SERVER_BASE_URL=http://127.0.0.1:5000
+      - NEXT_PUBLIC_CLIENT_BASE_URL=http://127.0.0.1:3000
+      - APP_DOMAIN=localhost
+    restart: always
+    depends_on:
+      - mongo
+    networks:
+      - readit_network
+    links:
+      - "mongo:db_server" # Alias mongo as db_server
+  mongo:
+    build:
+      context: .
+      dockerfile: Dockerfile.mongodb
+    networks:
+      - readit_network
+
+networks:
+  readit_network:
