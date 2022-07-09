@@ -10,9 +10,8 @@ RUN npm run build
 WORKDIR /home/app/client
 
 RUN npm install
+RUN npm run build
 
 WORKDIR /home/app
 
-CMD [ "npm", "run", "dev" ]
-
-EXPOSE 3000
+CMD [ "npm", "run", "start:both" ]

@@ -38,11 +38,13 @@
     "update": "^0.7.4"
   },
   "scripts": {
-    "start": "node build/server.js",
+    "start": "set NODE_ENV=production && node build/server.js",
     "typeorm": "ts-node ./node_modules/typeorm/cli.js",
     "server": "nodemon --exec ts-node src/server.ts",
     "client": "cd client && npm run dev",
     "dev": "concurrently \"npm run server\" \"npm run client\" --names server,client",
+    "start:client": "cd client && npm start",
+    "start:both": "concurrently \"npm start\" \"npm run start:client\" --names server,client",
     "seed": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed",
     "build": "npx tsc",
     "postinstall": "npm run build"
