@@ -2,7 +2,6 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useSWR from "swr";
-import Image from "next/image";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import classNames from "classnames";
@@ -78,8 +77,9 @@ export default function PostPage() {
             <div className="container flex">
               {post && (
                 <div className="w-8 h-8 mr-2 overflow-hidden rounded-full">
-                  <Image
+                  <img
                     src={post.sub.imageUrl}
+                    alt={post.sub.title}
                     height={(8 * 16) / 4}
                     width={(8 * 16) / 4}
                   />

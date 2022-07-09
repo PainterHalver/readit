@@ -1,6 +1,6 @@
 FROM mongo:5.0.9
 
-COPY ./src/seeds/db_dump /tmp/db_dump
+COPY ./mongodb/db_dump /tmp/db_dump
 
 CMD mongod --fork --logpath /var/log/mongodb.log; \
     mongorestore /tmp/db_dump/; \
