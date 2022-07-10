@@ -8,6 +8,7 @@ import { Post, Sub } from "./../types";
 import PostCard from "./../components/PostCard";
 import Link from "next/link";
 import { useAuthState } from "../context/auth";
+import PostCardSkeleton from "../components/PostCardSkeleton";
 
 dayjs.extend(relativeTime);
 
@@ -91,9 +92,9 @@ export default function Home() {
       <div className="container flex pt-4">
         {/* Posts */}
         <div className="w-full px-4 md:w-160 md:p-0">
-          {isLoadingInitialData && (
-            <p className="text-lg text-center">Loading..</p>
-          )}
+          {isLoadingInitialData &&
+            // <p className="text-lg text-center">Loading..</p>
+            [...Array(10)].map((_) => <PostCardSkeleton />)}
           {posts?.map((post) => (
             <PostCard
               post={post}
@@ -103,7 +104,8 @@ export default function Home() {
             />
           ))}
           {isValidating && posts.length > 0 && (
-            <p className="text-lg text-center">Loading..</p>
+            // <p className="text-lg text-center">Loading..</p>
+            <PostCardSkeleton />
           )}
         </div>
         {/* Sidebar */}
