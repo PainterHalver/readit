@@ -94,7 +94,7 @@ export default function Home() {
         <div className="w-full px-4 md:w-160 md:p-0">
           {isLoadingInitialData &&
             // <p className="text-lg text-center">Loading..</p>
-            [...Array(10)].map((_) => <PostCardSkeleton />)}
+            [...Array(10)].map((_, i) => <PostCardSkeleton key={i} />)}
           {posts?.map((post) => (
             <PostCard
               post={post}
