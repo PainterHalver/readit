@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Fragment, useEffect, useState } from "react";
+import { useTheme } from "next-themes";
 
 import { useAuthDispatch, useAuthState } from "../context/auth";
 import { Sub } from "../types";
@@ -12,6 +13,8 @@ const Navbar: React.FC = () => {
   const [name, setName] = useState("");
   const [subs, setSubs] = useState<Sub[]>([]);
   const [timer, setTimer] = useState(null);
+
+  const { theme, setTheme } = useTheme();
 
   const { authenticated, loading } = useAuthState();
   const dispatch = useAuthDispatch();
@@ -56,7 +59,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-x-0 top-0 z-10 flex items-center justify-between h-12 px-5 bg-white">
+    <div className="fixed inset-x-0 top-0 z-10 flex items-center justify-between h-12 px-5 bg-white dark:bg-dark-navbar dark:border-dark-border dark:border-b">
       {/* Logo and title */}
       <div className="flex items-center">
         <Link href="/">
@@ -70,7 +73,7 @@ const Navbar: React.FC = () => {
       </div>
       {/* Search Input */}
       <div className="max-w-full px-4 w-160">
-        <div className="relative flex items-center bg-gray-100 border rounded hover:border-blue-500 hover:bg-white">
+        <div className="relative flex items-center bg-gray-100 border rounded hover:border-blue-500 hover:bg-white dark:hover:border-white dark:bg-dark-search dark:border-dark-border">
           <i className="pl-4 pr-3 text-gray-500 fas fa-search"></i>
           <input
             type="text"
@@ -108,6 +111,12 @@ const Navbar: React.FC = () => {
 
       {/* Auth buttons */}
       <div className="flex">
+        <button
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          className="w-12 py-1 mr-4 leading-5 sm:block lg:w-32 hollow blue button"
+        >
+          {theme === "dark" ? "Light" : "Dark"}
+        </button>
         {!loading &&
           (authenticated ? (
             // Show logout button

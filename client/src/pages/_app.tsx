@@ -2,12 +2,11 @@ import { AppProps } from "next/app";
 import Axios from "axios";
 import { useRouter } from "next/router";
 import { SWRConfig } from "swr";
+import { ThemeProvider } from "next-themes";
 
 import { AuthProvider } from "../context/auth";
-
 import "../styles/tailwind.css";
 import "../styles/icons.css";
-
 import NavBar from "./../components/Navbar";
 
 Axios.defaults.baseURL = process.env.NEXT_PUBLIC_SERVER_BASE_URL + "/api";
@@ -35,14 +34,16 @@ function App({ Component, pageProps }: AppProps) {
         // revalidateOnMount: true,
       }}
     >
-      {/* Now the app has access to stateContext and dispatch method */}
-      <AuthProvider>
-        {/* Not showing Navbar in login or register page */}
-        {!authRoute && <NavBar />}
-        <div className={authRoute ? "" : "pt-12"}>
-          <Component {...pageProps} />
-        </div>
-      </AuthProvider>
+      <ThemeProvider attribute="class">
+        {/* Now the app has access to stateContext and dispatch method */}
+        <AuthProvider>
+          {/* Not showing Navbar in login or register page */}
+          {!authRoute && <NavBar />}
+          <div className={authRoute ? "" : "pt-12"}>
+            <Component {...pageProps} />
+          </div>
+        </AuthProvider>
+      </ThemeProvider>
     </SWRConfig>
   );
 }

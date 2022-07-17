@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useAuthState } from "../context/auth";
 import PostCardSkeleton from "../components/PostCardSkeleton";
 import TopSubSkeleton from "../components/TopSubSkeleton";
+import classNames from "classnames";
 
 dayjs.extend(relativeTime);
 
@@ -110,9 +111,9 @@ export default function Home() {
           )}
         </div>
         {/* Sidebar */}
-        <div className="hidden ml-6 md:block w-80">
-          <div className="bg-white rounded">
-            <div className="p-4 border-b-2">
+        <div className="hidden ml-6 md:block w-80 ">
+          <div className="bg-white rounded dark:bg-dark-card">
+            <div className="p-4 border-b-2 dark:border-dark-border">
               <p className="text-lg font-semibold text-center">
                 Top Communities
               </p>
@@ -123,11 +124,18 @@ export default function Home() {
                 <TopSubSkeleton />
               ) : (
                 topSubs.map((sub, index: number) => {
-                  if (index < 5)
+                  const MAX_SUBS_RECOMMENDED = 5;
+                  if (index < MAX_SUBS_RECOMMENDED)
                     return (
                       <div
                         key={sub.name}
-                        className="flex items-center px-4 py-2 text-xs border-b"
+                        className={classNames(
+                          "flex items-center px-4 py-2 text-xs border-b dark:border-dark-border",
+                          {
+                            "rounded-b border-none":
+                              index === MAX_SUBS_RECOMMENDED - 1,
+                          }
+                        )}
                       >
                         <div className="mr-2">
                           <Link href={`/r/${sub.name}`}>

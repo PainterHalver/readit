@@ -52,7 +52,7 @@ class MyDocument extends Document {
             referrerPolicy="no-referrer"
           />
         </Head>
-        <body className="font-body" style={{ backgroundColor: "#DAE0E6" }}>
+        <body className="font-body dark:bg-dark-body bg-gray-body">
           <Main />
           <NextScript />
         </body>

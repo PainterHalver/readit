@@ -47,10 +47,13 @@ export default function PostCard({
   return (
     <div
       key={identifier}
-      className={classNames("flex mb-4 bg-white rounded", {
-        "hover:border-black border cursor-pointer transition-all duration-75":
-          atIndexPage,
-      })}
+      className={classNames(
+        "flex mb-4 bg-white dark:bg-dark-card rounded dark:border-dark-border",
+        {
+          "hover:border-black dark:hover:border-gray-500 dark:transition-none border cursor-pointer transition-all duration-75":
+            atIndexPage,
+        }
+      )}
       // onClick={(e) => {
       //   if (e.target["href"]) return router.push(e.target["href"]);
       //   atIndexPage ? router.push(url) : null;
@@ -59,7 +62,7 @@ export default function PostCard({
     >
       {/* Vote */}
       <Vote
-        className="w-10 py-1 text-center bg-gray-200 rounded-l"
+        className="w-10 py-1 text-center bg-gray-200 rounded-l dark:bg-dark-vote"
         userVote={userVote}
         voteScore={voteScore}
         post={{
@@ -95,10 +98,12 @@ export default function PostCard({
                   /r/{subName}
                 </a>
               </Link>
-              <span className="mx-1 text-xs text-gray-500">•</span>
+              <span className="mx-1 text-xs text-gray-500 dark:text-gray-400">
+                •
+              </span>
             </Fragment>
           )}
-          <p className="text-xs text-gray-600">
+          <p className="text-xs text-gray-600 dark:text-gray-400">
             {" "}
             Posted by
             <Link href={`/u/${username}`}>
