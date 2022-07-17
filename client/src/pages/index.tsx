@@ -9,6 +9,7 @@ import PostCard from "./../components/PostCard";
 import Link from "next/link";
 import { useAuthState } from "../context/auth";
 import PostCardSkeleton from "../components/PostCardSkeleton";
+import TopSubSkeleton from "../components/TopSubSkeleton";
 
 dayjs.extend(relativeTime);
 
@@ -118,33 +119,37 @@ export default function Home() {
             </div>
             <div>
               {/* TOP SUBS */}
-              {topSubs?.map((sub, index: number) => {
-                if (index < 5)
-                  return (
-                    <div
-                      key={sub.name}
-                      className="flex items-center px-4 py-2 text-xs border-b"
-                    >
-                      <div className="mr-2">
+              {!topSubs ? (
+                <TopSubSkeleton />
+              ) : (
+                topSubs.map((sub, index: number) => {
+                  if (index < 5)
+                    return (
+                      <div
+                        key={sub.name}
+                        className="flex items-center px-4 py-2 text-xs border-b"
+                      >
+                        <div className="mr-2">
+                          <Link href={`/r/${sub.name}`}>
+                            <a>
+                              <img
+                                src={sub.imageUrl}
+                                alt="TopSub"
+                                className="w-6 h-6 rounded-full cursor-pointer"
+                              />
+                            </a>
+                          </Link>
+                        </div>
                         <Link href={`/r/${sub.name}`}>
-                          <a>
-                            <img
-                              src={sub.imageUrl}
-                              alt="TopSub"
-                              className="w-6 h-6 rounded-full cursor-pointer"
-                            />
+                          <a className="font-bold hover:cursor-pointer hover:underline">
+                            /r/{sub.name}
                           </a>
                         </Link>
+                        <p className="ml-auto font-medium">{sub.postCount}</p>
                       </div>
-                      <Link href={`/r/${sub.name}`}>
-                        <a className="font-bold hover:cursor-pointer hover:underline">
-                          /r/{sub.name}
-                        </a>
-                      </Link>
-                      <p className="ml-auto font-medium">{sub.postCount}</p>
-                    </div>
-                  );
-              })}
+                    );
+                })
+              )}
             </div>
             {authenticated && (
               <div className="p-4 border-t-2">
