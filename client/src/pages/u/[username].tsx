@@ -39,13 +39,13 @@ export default function User() {
                 return (
                   <div
                     key={comment.identifier}
-                    className="flex my-4 bg-white rounded"
+                    className="flex my-4 bg-white rounded dark:bg-dark-card dark:border-dark-border dark:border"
                   >
-                    <div className="flex-shrink-0 w-10 py-4 text-center bg-gray-200 rounded-l">
-                      <i className="text-gray-500 fas fa-comment-alt fa-xs"></i>
+                    <div className="flex-shrink-0 w-10 py-4 text-center bg-gray-200 rounded-l dark:bg-dark-vote">
+                      <i className="text-gray-500 dark:text-gray-400 fas fa-comment-alt fa-xs"></i>
                     </div>
                     <div className="w-full p-2">
-                      <p className="mb-2 text-xs text-gray-500">
+                      <p className="mb-2 text-xs text-gray-500 dark:text-gray-400">
                         /u/{comment.username.username}
                         <span> commented on </span>
                         <Link href={comment.post.url}>
@@ -69,8 +69,8 @@ export default function User() {
             })}
           </div>
           <div className="ml-6 w-80">
-            <div className="bg-white rounded">
-              <div className="p-3 bg-blue-500 rounded-t">
+            <div className="bg-white border rounded dark:bg-dark-card dark:border-dark-border">
+              <div className="p-3 bg-blue-500 rounded-t dark:bg-dark-vote">
                 <img
                   src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
                   alt="user profile"

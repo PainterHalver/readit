@@ -51,7 +51,7 @@ export default function PostCard({
         "flex mb-4 bg-white dark:bg-dark-card rounded dark:border-dark-border",
         {
           "hover:border-black dark:hover:border-gray-500 dark:transition-none border cursor-pointer transition-all duration-75":
-            atIndexPage,
+            true,
         }
       )}
       // onClick={(e) => {
