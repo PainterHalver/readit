@@ -36,7 +36,7 @@ export default function CreateSub() {
   };
 
   return (
-    <div className="flex bg-white">
+    <div className="flex bg-white dark:bg-dark-vote">
       <Head>
         <title>Create a Community</title>
       </Head>
@@ -51,13 +51,13 @@ export default function CreateSub() {
           <form onSubmit={submitForm}>
             <div className="my-6">
               <p className="font-medium">Name</p>
-              <p className="mb-2 text-xs text-gray-500">
+              <p className="mb-2 text-xs text-gray-500 dark:text-gray-400">
                 Community names including capitalization cannot be changed.
               </p>
               <input
                 type="text"
                 className={classNames(
-                  "w-full p-3 border border-gray-200 rounded hover:border-gray-500",
+                  "w-full p-3 transition duration-200 border rounded outline-none border-gray-300 bg-gray-50 focus:bg-white hover:bg-white dark:bg-dark-card dark:hover:bg-dark-border dark:focus:bg-dark-vote dark:border-dark-border",
                   { "border-red-600": errors.name }
                 )}
                 value={name}
@@ -67,14 +67,14 @@ export default function CreateSub() {
             </div>
             <div className="my-6">
               <p className="font-medium">Title</p>
-              <p className="mb-2 text-xs text-gray-500">
+              <p className="mb-2 text-xs text-gray-500 dark:text-gray-400">
                 Community title represent the topic an you change it at any
                 time.
               </p>
               <input
                 type="text"
                 className={classNames(
-                  "w-full p-3 border border-gray-200 rounded hover:border-gray-500",
+                  "w-full p-3 transition duration-200 border rounded outline-none border-gray-300 bg-gray-50 focus:bg-white hover:bg-white dark:bg-dark-card dark:hover:bg-dark-border dark:focus:bg-dark-vote dark:border-dark-border",
                   { "border-red-600": errors.name }
                 )}
                 value={title}
@@ -84,12 +84,12 @@ export default function CreateSub() {
             </div>
             <div className="my-6">
               <p className="font-medium">Description</p>
-              <p className="mb-2 text-xs text-gray-500">
+              <p className="mb-2 text-xs text-gray-500 dark:text-gray-400">
                 This is how new members come to understand your community.
               </p>
               <textarea
                 className={classNames(
-                  "w-full p-3 border border-gray-200 rounded hover:border-gray-500 resize-none",
+                  "w-full p-3 transition duration-200 border rounded outline-none border-gray-300 bg-gray-50 focus:bg-white hover:bg-white dark:bg-dark-card dark:hover:bg-dark-border dark:focus:bg-dark-vote dark:border-dark-border",
                   { "border-red-600": errors.description }
                 )}
                 value={description}

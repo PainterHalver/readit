@@ -73,7 +73,7 @@ export default function PostPage() {
       </Head>
       <Link href={`/r/${sub}`}>
         <a>
-          <div className="flex items-center w-full h-20 p-8 bg-blue-500">
+          <div className="flex items-center w-full h-20 p-8 bg-blue-500 dark:bg-dark-vote">
             <div className="container flex">
               {post && (
                 <div className="w-8 h-8 mr-2 overflow-hidden rounded-full">
@@ -93,7 +93,7 @@ export default function PostPage() {
       <div className="container flex pt-5">
         {/* Post */}
         <div className="w-160">
-          <div className="bg-white rounded">
+          <div className="bg-white rounded dark:bg-dark-card dark:border-dark-border dark:border">
             {post && (
               <>
                 <div className="flex">
@@ -106,7 +106,7 @@ export default function PostPage() {
                   />
                   <div className="py-2 pr-2">
                     <div className="flex items-center">
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
                         Posted by
                         <Link href={`/u/${post.username}`}>
                           <a className="mx-1 hover:underline">
@@ -161,7 +161,7 @@ export default function PostPage() {
                       </p>
                       <form onSubmit={submitComment}>
                         <textarea
-                          className="w-full p-3 border border-gray-300 rounded resize-none focus:outline-none focus:border-gray-600"
+                          className="w-full p-3 border border-gray-300 rounded resize-none dark:border-dark-border focus:outline-none focus:border-gray-600"
                           onChange={(e) => setNewComment(e.target.value)}
                           value={newComment}
                         ></textarea>
@@ -176,8 +176,8 @@ export default function PostPage() {
                       </form>
                     </div>
                   ) : (
-                    <div className="flex items-center justify-between px-2 py-4 border border-gray-200 rounded">
-                      <p className="font-semibold text-gray-400">
+                    <div className="flex items-center justify-between px-2 py-4 border border-gray-200 rounded dark:border-dark-border">
+                      <p className="font-semibold text-gray-400 dark:text-gray-300">
                         Log in or sign up to leave a comment!
                       </p>
                       <div>
@@ -193,7 +193,7 @@ export default function PostPage() {
                     </div>
                   )}
                 </div>
-                <hr />
+                <hr className="dark:border-t dark:border-dark-border" />
                 {/* Comment feed */}
                 {comments?.map((comment) => (
                   <div className="flex" key={comment.identifier}>
@@ -212,7 +212,7 @@ export default function PostPage() {
                             {comment.username.username}
                           </a>
                         </Link>
-                        <span className="text-gray-600">
+                        <span className="text-gray-600 dark:text-gray-400">
                           {`
                             ${comment.voteScore}
                             points •

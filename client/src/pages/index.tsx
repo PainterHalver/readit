@@ -133,7 +133,8 @@ export default function Home() {
                           "flex items-center px-4 py-2 text-xs border-b dark:border-dark-border",
                           {
                             "rounded-b border-none":
-                              index === MAX_SUBS_RECOMMENDED - 1,
+                              index === MAX_SUBS_RECOMMENDED - 1 &&
+                              !authenticated,
                           }
                         )}
                       >
@@ -160,7 +161,7 @@ export default function Home() {
               )}
             </div>
             {authenticated && (
-              <div className="p-4 border-t-2">
+              <div className="p-4 border-t-2 dark:border-dark-border">
                 <Link href="/subs/create">
                   <a className="w-full px-2 py-1 blue button">
                     Create Community

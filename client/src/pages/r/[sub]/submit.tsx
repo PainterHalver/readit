@@ -54,20 +54,20 @@ export default function Submit() {
         <title>Submit to readit</title>
       </Head>
       <div className="w-160">
-        <div className="p-4 bg-white rounded">
+        <div className="p-4 bg-white rounded dark:bg-dark-card">
           <h1 className="mb-3 text-lg">Submit a post to /r/{subName}</h1>
           <form onSubmit={submitPost}>
             <div className="relative mb-2">
               <input
                 type="text"
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-gray-600"
+                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-gray-600 dark:border-dark-border"
                 placeholder="Title"
                 maxLength={300}
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
               <div
-                className="absolute mb-2 text-sm text-gray-500 select-none focus:border-gray-600"
+                className="absolute mb-2 text-sm text-gray-500 select-none focus:border-gray-600 dark:border-dark-border"
                 style={{
                   top: "-22px",
                   right: "5px",
@@ -77,7 +77,7 @@ export default function Submit() {
               </div>
             </div>
             <textarea
-              className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-gray-600"
+              className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-gray-600 dark:border-dark-border"
               value={body}
               placeholder="Text (optional)"
               rows={4}
