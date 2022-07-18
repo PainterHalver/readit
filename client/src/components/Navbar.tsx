@@ -83,12 +83,12 @@ const Navbar: React.FC = () => {
             onChange={(e) => setName(e.target.value)}
           />
           <div
-            className="absolute left-0 right-0 bg-white"
+            className="absolute left-0 right-0 bg-white dark:bg-dark-vote"
             style={{ top: "100%" }}
           >
             {subs?.map((sub) => (
               <div
-                className="flex items-center px-4 py-3 cursor-pointer hover:bg-gray-200"
+                className="flex items-center px-4 py-3 cursor-pointer hover:bg-gray-200 dark:border-dark-border dark:border-b dark:hover:bg-dark-card"
                 onClick={() => goToSub(sub.name)}
                 key={sub.name}
               >
@@ -101,7 +101,9 @@ const Navbar: React.FC = () => {
                 ></Image>
                 <div className="ml-4 text-sm">
                   <p className="font-medium">{sub.name}</p>
-                  <p className="text-gray-600">{sub.title}</p>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    {sub.title}
+                  </p>
                 </div>
               </div>
             ))}

@@ -42,7 +42,7 @@ export default function Login() {
   };
 
   return (
-    <div className="flex bg-white">
+    <div className="flex bg-white dark:bg-dark-vote">
       <Head>
         <title>Login</title>
       </Head>

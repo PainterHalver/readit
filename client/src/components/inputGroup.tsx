@@ -23,7 +23,7 @@ const InputGroup: React.FC<InputGroupProps> = ({
       <input
         type={type}
         className={classNames(
-          "w-full p-3 transition duration-200 border rounded outline-none border-gray-300 bg-gray-50 focus:bg-white hover:bg-white",
+          "w-full p-3 transition duration-200 border rounded outline-none border-gray-300 bg-gray-50 focus:bg-white hover:bg-white dark:bg-dark-card dark:hover:bg-dark-border dark:focus:bg-dark-vote",
           { "border-red-500": error }
         )}
         placeholder={placeholder}

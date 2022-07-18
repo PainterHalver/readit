@@ -49,7 +49,7 @@ export default function Register() {
   };
 
   return (
-    <div className="flex bg-white">
+    <div className="flex bg-white dark:bg-dark-vote">
       <Head>
         <title>Register</title>
       </Head>
