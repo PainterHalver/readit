@@ -19,7 +19,11 @@ services:
       - NODE_ENV=production
       - MONGODB_URL=mongodb://mongo:27017/readit
       - APP_URL=http://localhost
-      - JWT_SECRET="a super secure secret"
+      - FRONT_END_URL=http://localhost
+      - JWT_SECRET=${JWT_SECRET}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - DEFAULT_GOOGLE_PASSWORD=${DEFAULT_GOOGLE_PASSWORD}
     restart: always
     depends_on:
       - mongo
