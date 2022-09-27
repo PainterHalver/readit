@@ -60,7 +60,11 @@ export default function Login() {
           </p>
 
           <a
-            href={`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/auth/google`}
+            href={`${
+              process.env.NODE_ENV == "development"
+                ? process.env.NEXT_PUBLIC_SERVER_BASE_URL
+                : ""
+            }/api/auth/google`}
             className="flex items-center justify-between w-full p-1 mb-4 font-bold text-blue-500 uppercase border border-blue-500 rounded hover:bg-blue-500 hover:text-white text-md"
           >
             <div className="p-3 bg-white rounded">
