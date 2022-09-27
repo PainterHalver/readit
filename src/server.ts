@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import { createConnection } from "typeorm";
 import express from "express";
+import http from "http";
 import morgan from "morgan";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
@@ -16,8 +17,42 @@ import miscRouter from "./routes/misc";
 import trim from "./middlewares/trim";
 import globalErrorHandler from "./utils/errorHandler";
 
+// i5-9400f
+// loadtest -c 10 --rps 200 http://127.0.0.1:5000/api/posts
+// before: 101 req/s
+// after:  160 req/s
 const app = express();
-const port = process.env.PORT || 5000;
+import cluster from "cluster";
+const numCPUs = require("os").cpus().length;
+if (cluster.isPrimary) {
+  console.log(`Master ${process.pid} is running`);
+
+  // Fork workers.
+  for (let i = 0; i < numCPUs; i++) {
+    cluster.fork();
+  }
+
+  cluster.on("exit", (worker: any, code: any, _) => {
+    if (code !== 0 && !worker.exitedAfterDisconnect) {
+      console.log(`Worker ${worker.id} crashed. ` + "Starting a new worker...");
+      cluster.fork();
+    }
+  });
+} else {
+  const port = process.env.PORT || 5000;
+
+  app.locals.server = http.createServer(app);
+  app.locals.server.listen(port, async () => {
+    console.log(`Worker ${process.pid} started`);
+
+    try {
+      await createConnection();
+      console.log("DATABASE CONNECTED!");
+    } catch (err) {
+      console.log(err);
+    }
+  });
+}
 
 app.use(express.json());
 app.use(cookieParser());
@@ -43,17 +78,6 @@ const corsOptions = {
 const corsOpts = cors(corsOptions);
 app.use(corsOpts);
 app.options("*", corsOpts);
-
-app.listen(port, async () => {
-  console.log(`Server running on port ${port}`);
-
-  try {
-    await createConnection();
-    console.log("DATABASE CONNECTED!");
-  } catch (err) {
-    console.log(err);
-  }
-});
 
 app.use(express.static("public"));
 

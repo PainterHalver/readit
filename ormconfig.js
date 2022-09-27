@@ -3,7 +3,7 @@ const rootDir = process.env.NODE_ENV === "development" ? "src" : "build";
 
 module.exports = {
   type: "mongodb",
-  url: process.env.MONGODB_URL,
+  url: "mongodb://localhost:27017/readit",
 
   synchronize: true,
   useNewUrlParser: true,
