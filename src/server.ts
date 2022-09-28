@@ -19,8 +19,16 @@ import globalErrorHandler from "./utils/errorHandler";
 
 // i5-9400f
 // loadtest -c 10 --rps 200 http://127.0.0.1:5000/api/posts
-// before: 101 req/s
-// after:  160 req/s
+// vanilla thread + mongodb: 101 req/s
+// cluster:  160 req/s
+// cluster + redis:  200 req/s (max)
+
+import { createClient } from "redis";
+export const client = createClient({ url: "redis://127.0.0.1:6379" });
+client.on("error", console.log);
+client.on("connect", function () {
+  console.log("REDIS CONNECTED!");
+});
 const app = express();
 import cluster from "cluster";
 const numCPUs = require("os").cpus().length;
@@ -47,6 +55,7 @@ if (cluster.isPrimary) {
 
     try {
       await createConnection();
+      await client.connect();
       console.log("DATABASE CONNECTED!");
     } catch (err) {
       console.log(err);

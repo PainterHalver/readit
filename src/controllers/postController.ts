@@ -4,6 +4,8 @@ import Post from "../entities/Post";
 import Sub from "../entities/Sub";
 import catchAsync from "../utils/catchAsync";
 
+import { client } from "../server";
+
 export const createPost = catchAsync(
   async (req: Request, res: Response, _: NextFunction) => {
     const { title, body, sub } = req.body;
@@ -30,26 +32,38 @@ export const createPost = catchAsync(
   }
 );
 
+function isPost(arg: any): arg is Post {
+  return arg && arg.prop && typeof arg.prop == "number";
+}
 export const getPosts = catchAsync(
   async (req: Request, res: Response, _: NextFunction) => {
     const currentPage: number = (req.query.page || 0) as number;
     const postsPerPage: number = (req.query.count || 8) as number;
 
-    const posts = await Post.find({
-      order: { createdAt: "DESC" },
-      // relations: ["sub"], // NOT WORKING WITH MONGODB
-      skip: currentPage * postsPerPage,
-      take: Number(postsPerPage),
-    });
+    let posts: Post[] = [];
+    const postsRedisString: string = (await client.get("posts")) ?? "";
+    posts = JSON.parse(postsRedisString) as Post[];
 
-    // Fake populating sub in posts
-    await Promise.all(
-      posts.map(async (post) => {
-        await post.populateSub();
-        await post.populateVotes();
-        await post.populateComments();
-      })
-    );
+    // TODO: Cache this properly
+    if (posts.length === 0) {
+      posts = await Post.find({
+        order: { createdAt: "DESC" },
+        // relations: ["sub"], // NOT WORKING WITH MONGODB
+        skip: currentPage * postsPerPage,
+        take: Number(postsPerPage),
+      });
+
+      // Fake populating sub in posts
+      await Promise.all(
+        posts.map(async (post) => {
+          await post.populateSub();
+          await post.populateVotes();
+          await post.populateComments();
+        })
+      );
+
+      await client.setEx("posts", 300, JSON.stringify(posts));
+    }
 
     if (res.locals.user) {
       await Promise.all(
