@@ -8,6 +8,8 @@ import { useTheme } from "next-themes";
 import { useAuthDispatch, useAuthState } from "../context/auth";
 import { Sub } from "../types";
 import RedditLogo from "./../images/reddit.svg";
+import Moon from "./../images/moon.svg";
+import Sun from "./../images/sun.svg";
 
 const Navbar: React.FC = () => {
   const [name, setName] = useState("");
@@ -115,9 +117,13 @@ const Navbar: React.FC = () => {
       <div className="flex">
         <button
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-          className="w-12 py-1 mr-4 leading-5 sm:block lg:w-32 hollow blue button"
+          className="flex items-center justify-center w-8 p-1 mr-5 leading-5 border border-blue-500 rounded sm:block hover:bg-slate-200 dark:hover:bg-gray-900"
         >
-          {theme !== "dark" ? "Dark" : "Light"}
+          {theme !== "dark" ? (
+            <Moon className="w-6 h-6 text-blue-500" />
+          ) : (
+            <Sun className="w-6 h-6 text-yellow-400" />
+          )}
         </button>
         {!loading &&
           (authenticated ? (
