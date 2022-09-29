@@ -117,7 +117,7 @@ const Navbar: React.FC = () => {
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
           className="w-12 py-1 mr-4 leading-5 sm:block lg:w-32 hollow blue button"
         >
-          {theme === "dark" ? "Light" : "Dark"}
+          {theme !== "dark" ? "Dark" : "Light"}
         </button>
         {!loading &&
           (authenticated ? (
